@@ -7,6 +7,8 @@ import CollectionsQueue from "@/components/collections-queue";
 import TabbedInterface from "@/components/tabbed-interface";
 
 export default function Dashboard() {
+  const [activeNav, setActiveNav] = useState("home");
+  
   const { data: stats, isLoading: statsLoading } = useQuery<{
     pending: number;
     active: number;
@@ -76,13 +78,30 @@ export default function Dashboard() {
       <div className="flex min-h-[calc(100vh-80px)]">
         {/* Sidebar */}
         <aside className="w-20 bg-card border-r border-border flex flex-col items-center py-6 space-y-6" data-testid="sidebar-navigation">
-          <Button size="icon" className="bg-primary text-primary-foreground" data-testid="button-nav-home">
+          <Button 
+            size="icon" 
+            className={`${activeNav === "home" ? "bg-primary text-primary-foreground" : "text-slate-600 hover:text-slate-800 hover:bg-slate-100"}`}
+            onClick={() => setActiveNav("home")}
+            data-testid="button-nav-home"
+          >
             <Home className="h-5 w-5" />
           </Button>
-          <Button variant="ghost" size="icon" className="text-slate-600 hover:text-slate-800 hover:bg-slate-100" data-testid="button-nav-queue">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className={`${activeNav === "queue" ? "bg-primary text-primary-foreground" : "text-slate-600 hover:text-slate-800 hover:bg-slate-100"}`}
+            onClick={() => setActiveNav("queue")}
+            data-testid="button-nav-queue"
+          >
             <List className="h-5 w-5" />
           </Button>
-          <Button variant="ghost" size="icon" className="text-slate-600 hover:text-slate-800 hover:bg-slate-100" data-testid="button-nav-settings">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className={`${activeNav === "settings" ? "bg-primary text-primary-foreground" : "text-slate-600 hover:text-slate-800 hover:bg-slate-100"}`}
+            onClick={() => setActiveNav("settings")}
+            data-testid="button-nav-settings"
+          >
             <Settings className="h-5 w-5" />
           </Button>
           
