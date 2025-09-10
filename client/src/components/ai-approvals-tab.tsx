@@ -1,9 +1,10 @@
+import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Check, Edit, X, AlertTriangle, Scroll, User, Phone, BarChart3 } from "lucide-react";
+import { Check, Edit, X, AlertTriangle, Scroll, User, Phone, BarChart3, Languages } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import type { Conversation, Tenant, Message } from "@shared/schema";
@@ -11,6 +12,7 @@ import type { Conversation, Tenant, Message } from "@shared/schema";
 export default function AiApprovalsTab() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const [showOriginalLanguage, setShowOriginalLanguage] = useState<{[key: string]: boolean}>({});
 
   const { data: conversations = [], isLoading: conversationsLoading } = useQuery<Conversation[]>({
     queryKey: ["/api/conversations"],
@@ -98,6 +100,21 @@ export default function AiApprovalsTab() {
     return tenants.find((t) => t.id === tenantId);
   };
 
+  const toggleLanguage = (conversationId: string) => {
+    setShowOriginalLanguage(prev => ({
+      ...prev,
+      [conversationId]: !prev[conversationId]
+    }));
+  };
+
+  const getDisplayContent = (message: Message, conversationId: string) => {
+    const showOriginal = showOriginalLanguage[conversationId];
+    if (showOriginal && message.originalContent) {
+      return message.originalContent;
+    }
+    return message.content;
+  };
+
   if (conversationsLoading || tenantsLoading) {
     return (
       <div className="p-6">
@@ -166,6 +183,18 @@ export default function AiApprovalsTab() {
                     {tenant.name} • {tenant.unit} • {tenant.property}
                   </h4>
                   <div className="flex items-center space-x-2">
+                    {lastTenantMessage && lastTenantMessage.originalContent && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => toggleLanguage(conversation.id)}
+                        className="flex items-center space-x-1"
+                        data-testid={`button-toggle-language-${conversation.id}`}
+                      >
+                        <Languages className="h-4 w-4" />
+                        <span>{showOriginalLanguage[conversation.id] ? 'Show English' : 'Show Original'}</span>
+                      </Button>
+                    )}
                     <div className="flex items-center space-x-1">
                       <div className="w-16 bg-gray-200 rounded-full h-2">
                         <div 
@@ -194,7 +223,7 @@ export default function AiApprovalsTab() {
                     <span className="text-sm font-medium text-blue-800">TENANT SAID:</span>
                   </div>
                   <p className="text-sm" data-testid={`text-tenant-message-${conversation.id}`}>
-                    "{lastTenantMessage.content}"
+                    "{getDisplayContent(lastTenantMessage, conversation.id)}"
                   </p>
                   <p className="text-xs text-muted-foreground mt-1">
                     {new Date(lastTenantMessage.timestamp).toLocaleTimeString()}
@@ -208,7 +237,7 @@ export default function AiApprovalsTab() {
                     <span className="text-sm font-medium text-purple-800">AI WANTS TO RESPOND:</span>
                   </div>
                   <p className="text-sm" data-testid={`text-ai-response-${conversation.id}`}>
-                    "{pendingMessage.content}"
+                    "{getDisplayContent(pendingMessage, conversation.id)}"
                   </p>
                 </div>
 

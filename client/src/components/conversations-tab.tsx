@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -5,10 +6,12 @@ import { Card } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { MessageSquare, User, Phone, AlertTriangle } from "lucide-react";
+import { MessageSquare, User, Phone, AlertTriangle, Languages } from "lucide-react";
 import type { Conversation, Tenant, Message } from "@shared/schema";
 
 export default function ConversationsTab() {
+  const [showOriginalLanguage, setShowOriginalLanguage] = useState<{[key: string]: boolean}>({});
+  
   const { data: conversations = [], isLoading: conversationsLoading } = useQuery<Conversation[]>({
     queryKey: ["/api/conversations"],
   });
@@ -21,6 +24,21 @@ export default function ConversationsTab() {
 
   const getTenantById = (tenantId: string) => {
     return tenants.find((t) => t.id === tenantId);
+  };
+
+  const toggleLanguage = (conversationId: string) => {
+    setShowOriginalLanguage(prev => ({
+      ...prev,
+      [conversationId]: !prev[conversationId]
+    }));
+  };
+
+  const getDisplayContent = (message: Message, conversationId: string) => {
+    const showOriginal = showOriginalLanguage[conversationId];
+    if (showOriginal && message.originalContent) {
+      return message.originalContent;
+    }
+    return message.content;
   };
 
   const getStatusColor = (status: string) => {
@@ -122,14 +140,28 @@ export default function ConversationsTab() {
             <Card key={conversation.id} className="p-4 border shadow-sm hover:shadow-md transition-shadow" data-testid={`card-conversation-${conversation.id}`}>
               <div className="flex items-center justify-between">
                 <div className="flex-1">
-                  <div className="flex items-center space-x-2 mb-2">
-                    <span className="text-lg">{getStatusIcon(conversation.status)}</span>
-                    <h4 className="font-semibold" data-testid={`text-conversation-tenant-${conversation.id}`}>
-                      {tenant.name} • {tenant.language} • {getMessageTimeAgo(lastMessage.timestamp)}
-                    </h4>
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center space-x-2">
+                      <span className="text-lg">{getStatusIcon(conversation.status)}</span>
+                      <h4 className="font-semibold" data-testid={`text-conversation-tenant-${conversation.id}`}>
+                        {tenant.name} • {tenant.language} • {getMessageTimeAgo(lastMessage.timestamp)}
+                      </h4>
+                    </div>
+                    {lastMessage && lastMessage.originalContent && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => toggleLanguage(conversation.id)}
+                        className="flex items-center space-x-1"
+                        data-testid={`button-toggle-language-${conversation.id}`}
+                      >
+                        <Languages className="h-4 w-4" />
+                        <span>{showOriginalLanguage[conversation.id] ? 'EN' : 'ES'}</span>
+                      </Button>
+                    )}
                   </div>
                   <p className="text-sm text-muted-foreground mb-2" data-testid={`text-last-message-${conversation.id}`}>
-                    Last: "{lastMessage.content.substring(0, 80)}..."
+                    Last: "{getDisplayContent(lastMessage, conversation.id).substring(0, 80)}..."
                   </p>
                   <div className="flex items-center space-x-2">
                     <Badge variant="outline" className={getStatusColor(conversation.status)}>
@@ -151,9 +183,23 @@ export default function ConversationsTab() {
                     </DialogTrigger>
                     <DialogContent className="max-w-4xl max-h-[80vh]">
                       <DialogHeader>
-                        <DialogTitle data-testid={`text-chat-title-${conversation.id}`}>
-                          Conversation: {tenant.name} - {tenant.unit}
-                        </DialogTitle>
+                        <div className="flex items-center justify-between">
+                          <DialogTitle data-testid={`text-chat-title-${conversation.id}`}>
+                            Conversation: {tenant.name} - {tenant.unit}
+                          </DialogTitle>
+                          {Array.isArray(conversation.messages) && conversation.messages.some((msg: Message) => msg.originalContent) && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => toggleLanguage(conversation.id)}
+                              className="flex items-center space-x-1"
+                              data-testid={`button-toggle-language-modal-${conversation.id}`}
+                            >
+                              <Languages className="h-4 w-4" />
+                              <span>{showOriginalLanguage[conversation.id] ? 'Show English' : 'Show Original'}</span>
+                            </Button>
+                          )}
+                        </div>
                       </DialogHeader>
                       <div className="grid grid-cols-3 gap-6">
                         {/* Tenant Info */}
@@ -216,7 +262,7 @@ export default function ConversationsTab() {
                                       </Badge>
                                     )}
                                   </div>
-                                  <p className="text-sm">{message.content}</p>
+                                  <p className="text-sm">{getDisplayContent(message, conversation.id)}</p>
                                 </div>
                               ))}
                             </div>
