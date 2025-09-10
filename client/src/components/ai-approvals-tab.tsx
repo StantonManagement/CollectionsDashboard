@@ -54,7 +54,7 @@ export default function AiApprovalsTab() {
       const conversation = conversations.find((c: Conversation) => c.id === conversationId);
       if (!conversation) return;
 
-      const updatedMessages = conversation.messages.map((msg: Message) => 
+      const updatedMessages = (conversation.messages as Message[]).map((msg: Message) => 
         msg.needsApproval ? { ...msg, needsApproval: false } : msg
       );
 

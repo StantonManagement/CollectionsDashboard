@@ -133,7 +133,7 @@ export default function ConversationsTab() {
           const tenant = getTenantById(conversation.tenantId);
           if (!tenant) return null;
 
-          const lastMessage = getLastMessage(conversation.messages);
+          const lastMessage = getLastMessage(conversation.messages as Message[]);
           if (!lastMessage) return null;
 
           return (
