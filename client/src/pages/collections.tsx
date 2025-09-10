@@ -1,12 +1,12 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Bell, Home, List, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Link, useLocation } from "wouter";
 import CollectionsQueue from "@/components/collections-queue";
-import TabbedInterface from "@/components/tabbed-interface";
 
-export default function Dashboard() {
+export default function CollectionsPage() {
   const [location] = useLocation();
   
   const { data: stats, isLoading: statsLoading } = useQuery<{
@@ -38,7 +38,7 @@ export default function Dashboard() {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-6">
               <h1 className="text-xl font-semibold text-foreground" data-testid="text-company-name">
-                Stanton Management
+                Stanton Management - Collections Queue
               </h1>
               <div className="flex items-center space-x-3">
                 <Badge variant="secondary" className="bg-slate-100 text-slate-700 hover:bg-slate-200" data-testid="badge-pending">
@@ -84,36 +84,33 @@ export default function Dashboard() {
       <div className="flex min-h-[calc(100vh-80px)]">
         {/* Sidebar */}
         <aside className="w-20 bg-card border-r border-border flex flex-col items-center py-6 space-y-6" data-testid="sidebar-navigation">
-          <Button 
-            asChild
-            size="icon" 
-            className={`${location === "/" ? "bg-primary text-primary-foreground" : "text-slate-600 hover:text-slate-800 hover:bg-slate-100"}`}
-            data-testid="button-nav-home"
-          >
-            <Link href="/">
+          <Link href="/">
+            <Button 
+              size="icon" 
+              className={`${location === "/" ? "bg-primary text-primary-foreground" : "text-slate-600 hover:text-slate-800 hover:bg-slate-100"}`}
+              data-testid="button-nav-home"
+            >
               <Home className="h-5 w-5" />
-            </Link>
-          </Button>
-          <Button 
-            asChild
-            size="icon" 
-            className={`${location === "/collections" ? "bg-primary text-primary-foreground" : "text-slate-600 hover:text-slate-800 hover:bg-slate-100"}`}
-            data-testid="button-nav-queue"
-          >
-            <Link href="/collections">
+            </Button>
+          </Link>
+          <Link href="/collections">
+            <Button 
+              size="icon" 
+              className={`${location === "/collections" ? "bg-primary text-primary-foreground" : "text-slate-600 hover:text-slate-800 hover:bg-slate-100"}`}
+              data-testid="button-nav-queue"
+            >
               <List className="h-5 w-5" />
-            </Link>
-          </Button>
-          <Button 
-            asChild
-            size="icon" 
-            className={`${location === "/settings" ? "bg-primary text-primary-foreground" : "text-slate-600 hover:text-slate-800 hover:bg-slate-100"}`}
-            data-testid="button-nav-settings"
-          >
-            <Link href="/settings">
+            </Button>
+          </Link>
+          <Link href="/settings">
+            <Button 
+              size="icon" 
+              className={`${location === "/settings" ? "bg-primary text-primary-foreground" : "text-slate-600 hover:text-slate-800 hover:bg-slate-100"}`}
+              data-testid="button-nav-settings"
+            >
               <Settings className="h-5 w-5" />
-            </Link>
-          </Button>
+            </Button>
+          </Link>
           
           <div className="mt-auto space-y-4 text-center">
             <div className="text-xs text-muted-foreground">
@@ -129,10 +126,9 @@ export default function Dashboard() {
           </div>
         </aside>
 
-        {/* Main Content */}
-        <main className="flex-1 flex">
-          <CollectionsQueue />
-          <TabbedInterface />
+        {/* Main Content - Full Width Collections Queue */}
+        <main className="flex-1 bg-background">
+          <CollectionsQueue fullWidth={true} />
         </main>
       </div>
     </div>

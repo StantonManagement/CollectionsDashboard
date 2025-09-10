@@ -8,7 +8,11 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Card } from "@/components/ui/card";
 import type { Tenant } from "@shared/schema";
 
-export default function CollectionsQueue() {
+interface CollectionsQueueProps {
+  fullWidth?: boolean;
+}
+
+export default function CollectionsQueue({ fullWidth = false }: CollectionsQueueProps) {
   const [selectedTenants, setSelectedTenants] = useState<string[]>([]);
   const [expandedTenant, setExpandedTenant] = useState<string | null>(null);
   const [priorityFilter, setPriorityFilter] = useState<string>("all");
@@ -78,7 +82,7 @@ export default function CollectionsQueue() {
 
   if (isLoading) {
     return (
-      <section className="w-1/2 bg-background p-6 border-r border-border">
+      <section className={`${fullWidth ? 'w-full' : 'w-1/2 border-r border-border'} bg-background p-6`}>
         <div className="animate-pulse space-y-4">
           <div className="h-6 bg-muted rounded w-1/3"></div>
           <div className="space-y-3">
@@ -92,7 +96,7 @@ export default function CollectionsQueue() {
   }
 
   return (
-    <section className="w-1/2 bg-background p-6 border-r border-border" data-testid="section-collections-queue">
+    <section className={`${fullWidth ? 'w-full' : 'w-1/2 border-r border-border'} bg-background p-6`} data-testid="section-collections-queue">
       <div className="mb-6">
         <h2 className="text-lg font-semibold mb-4" data-testid="text-queue-title">
           Collections Queue ({tenants.length} total)
