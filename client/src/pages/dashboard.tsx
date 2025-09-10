@@ -57,7 +57,13 @@ export default function Dashboard() {
             </div>
             <div className="flex items-center space-x-4">
               <div className="relative">
-                <Button variant="ghost" size="icon" className="relative" data-testid="button-notifications">
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="relative" 
+                  onClick={() => alert("Notifications panel would open here")}
+                  data-testid="button-notifications"
+                >
                   <Bell className="h-5 w-5" />
                   <Badge className="absolute -top-1 -right-1 bg-neutral-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center p-0">
                     12
