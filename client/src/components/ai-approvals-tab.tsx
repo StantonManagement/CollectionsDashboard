@@ -225,9 +225,16 @@ export default function AiApprovalsTab() {
                   <p className="text-sm" data-testid={`text-tenant-message-${conversation.id}`}>
                     "{getDisplayContent(lastTenantMessage, conversation.id)}"
                   </p>
-                  <p className="text-xs text-gray-600 mt-1 font-medium">
-                    {new Date(lastTenantMessage.timestamp).toLocaleTimeString()}
-                  </p>
+                  <div className="flex items-center justify-between mt-1">
+                    <p className="text-xs text-gray-600 font-medium">
+                      {new Date(lastTenantMessage.timestamp).toLocaleTimeString()}
+                    </p>
+                    {lastTenantMessage.originalContent && (
+                      <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-medium">
+                        {showOriginalLanguage[conversation.id] ? 'Spanish' : 'English'}
+                      </span>
+                    )}
+                  </div>
                 </div>
 
                 {/* AI Response */}
@@ -239,6 +246,13 @@ export default function AiApprovalsTab() {
                   <p className="text-sm" data-testid={`text-ai-response-${conversation.id}`}>
                     "{getDisplayContent(pendingMessage, conversation.id)}"
                   </p>
+                  {pendingMessage.originalContent && (
+                    <div className="flex justify-end mt-2">
+                      <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full font-medium">
+                        {showOriginalLanguage[conversation.id] ? 'Spanish' : 'English'}
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 {/* Plan Validation */}

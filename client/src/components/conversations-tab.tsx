@@ -261,6 +261,17 @@ export default function ConversationsTab() {
                                         AWAITING APPROVAL
                                       </Badge>
                                     )}
+                                    {message.originalContent && (
+                                      <span className={`text-xs px-2 py-1 rounded-full font-medium ${
+                                        message.sender === "tenant" 
+                                          ? "bg-blue-100 text-blue-700" 
+                                          : message.sender === "ai" 
+                                          ? "bg-purple-100 text-purple-700"
+                                          : "bg-gray-100 text-gray-700"
+                                      }`}>
+                                        {showOriginalLanguage[conversation.id] ? 'Spanish' : 'English'}
+                                      </span>
+                                    )}
                                   </div>
                                   <p className="text-sm">{getDisplayContent(message, conversation.id)}</p>
                                 </div>
