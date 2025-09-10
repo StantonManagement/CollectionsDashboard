@@ -32,18 +32,18 @@ export default function CollectionsQueue() {
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case "high": return "border-neutral-600";
-      case "medium": return "border-stone-500";
-      case "low": return "border-slate-500";
+      case "high": return "border-red-600";
+      case "medium": return "border-orange-500";
+      case "low": return "border-blue-500";
       default: return "border-gray-300";
     }
   };
 
   const getPriorityBadgeColor = (priority: string) => {
     switch (priority) {
-      case "high": return "bg-neutral-100 text-neutral-800";
-      case "medium": return "bg-stone-100 text-stone-800";
-      case "low": return "bg-slate-100 text-slate-800";
+      case "high": return "bg-red-100 text-red-800";
+      case "medium": return "bg-orange-100 text-orange-800";
+      case "low": return "bg-blue-100 text-blue-800";
       default: return "bg-gray-100 text-gray-800";
     }
   };
@@ -107,7 +107,7 @@ export default function CollectionsQueue() {
             className={`${priorityFilter === "high" ? "" : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200"}`}
             data-testid="button-filter-high"
           >
-            <span className="w-3 h-3 bg-neutral-600 mr-2"></span>
+            <span className="w-4 h-4 bg-red-600 mr-2"></span>
             High: {priorityCounts.high}
           </Button>
           <Button
@@ -117,7 +117,7 @@ export default function CollectionsQueue() {
             className={`${priorityFilter === "medium" ? "" : "bg-stone-100 text-stone-700 hover:bg-stone-200"}`}
             data-testid="button-filter-medium"
           >
-            <span className="w-3 h-3 bg-stone-500 mr-2"></span>
+            <span className="w-4 h-4 bg-orange-500 mr-2"></span>
             Medium: {priorityCounts.medium}
           </Button>
           <Button
@@ -127,7 +127,7 @@ export default function CollectionsQueue() {
             className={`${priorityFilter === "low" ? "" : "bg-slate-100 text-slate-700 hover:bg-slate-200"}`}
             data-testid="button-filter-low"
           >
-            <span className="w-3 h-3 bg-slate-500 mr-2"></span>
+            <span className="w-4 h-4 bg-blue-500 mr-2"></span>
             Low: {priorityCounts.low}
           </Button>
         </div>
@@ -194,7 +194,7 @@ export default function CollectionsQueue() {
                 />
                 <div className="flex-1">
                   <div className="flex items-center space-x-2 mb-1">
-                    <span className={`w-3 h-3 ${tenant.priority === "high" ? "bg-neutral-600" : tenant.priority === "medium" ? "bg-stone-500" : "bg-slate-500"}`}></span>
+                    <span className={`w-4 h-4 ${tenant.priority === "high" ? "bg-red-600" : tenant.priority === "medium" ? "bg-orange-500" : "bg-blue-500"}`}></span>
                     <h3 className="font-semibold" data-testid={`text-tenant-name-${tenant.id}`}>{tenant.name}</h3>
                   </div>
                   <p className="text-sm text-muted-foreground mb-2" data-testid={`text-tenant-property-${tenant.id}`}>

@@ -98,7 +98,7 @@ export default function ConversationsTab() {
               Active Conversations ({activeConversations.length} ongoing)
             </h3>
             <div className="flex items-center space-x-1 text-green-600">
-              <div className="w-3 h-3 bg-slate-500 animate-pulse"></div>
+              <div className="w-4 h-4 bg-green-500 animate-pulse"></div>
               <span className="text-xs font-medium">Live Updates</span>
             </div>
           </div>
