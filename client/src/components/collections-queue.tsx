@@ -107,7 +107,7 @@ export default function CollectionsQueue() {
             className={`${priorityFilter === "high" ? "" : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200"}`}
             data-testid="button-filter-high"
           >
-            <span className="w-2 h-2 bg-neutral-600 rounded-full mr-2"></span>
+            <span className="w-3 h-3 bg-neutral-600 mr-2"></span>
             High: {priorityCounts.high}
           </Button>
           <Button
@@ -117,7 +117,7 @@ export default function CollectionsQueue() {
             className={`${priorityFilter === "medium" ? "" : "bg-stone-100 text-stone-700 hover:bg-stone-200"}`}
             data-testid="button-filter-medium"
           >
-            <span className="w-2 h-2 bg-stone-500 rounded-full mr-2"></span>
+            <span className="w-3 h-3 bg-stone-500 mr-2"></span>
             Medium: {priorityCounts.medium}
           </Button>
           <Button
@@ -127,7 +127,7 @@ export default function CollectionsQueue() {
             className={`${priorityFilter === "low" ? "" : "bg-slate-100 text-slate-700 hover:bg-slate-200"}`}
             data-testid="button-filter-low"
           >
-            <span className="w-2 h-2 bg-slate-500 rounded-full mr-2"></span>
+            <span className="w-3 h-3 bg-slate-500 mr-2"></span>
             Low: {priorityCounts.low}
           </Button>
         </div>
@@ -194,7 +194,7 @@ export default function CollectionsQueue() {
                 />
                 <div className="flex-1">
                   <div className="flex items-center space-x-2 mb-1">
-                    <span className={`w-2 h-2 rounded-full ${tenant.priority === "high" ? "bg-red-500" : tenant.priority === "medium" ? "bg-yellow-500" : "bg-green-500"}`}></span>
+                    <span className={`w-3 h-3 ${tenant.priority === "high" ? "bg-neutral-600" : tenant.priority === "medium" ? "bg-stone-500" : "bg-slate-500"}`}></span>
                     <h3 className="font-semibold" data-testid={`text-tenant-name-${tenant.id}`}>{tenant.name}</h3>
                   </div>
                   <p className="text-sm text-muted-foreground mb-2" data-testid={`text-tenant-property-${tenant.id}`}>
