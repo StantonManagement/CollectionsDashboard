@@ -253,7 +253,7 @@ export default function ConversationsTab() {
                                     ) : (
                                       <span className="text-gray-600">👤</span>
                                     )}
-                                    <span className="text-xs font-medium text-muted-foreground">
+                                    <span className="text-xs font-medium text-gray-600">
                                       {new Date(message.timestamp).toLocaleString()}
                                     </span>
                                     {message.needsApproval && (

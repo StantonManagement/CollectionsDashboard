@@ -225,7 +225,7 @@ export default function AiApprovalsTab() {
                   <p className="text-sm" data-testid={`text-tenant-message-${conversation.id}`}>
                     "{getDisplayContent(lastTenantMessage, conversation.id)}"
                   </p>
-                  <p className="text-xs text-muted-foreground mt-1">
+                  <p className="text-xs text-gray-600 mt-1 font-medium">
                     {new Date(lastTenantMessage.timestamp).toLocaleTimeString()}
                   </p>
                 </div>

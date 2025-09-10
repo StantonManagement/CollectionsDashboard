@@ -181,7 +181,7 @@ export default function EscalationsTab() {
                               <p className="text-sm text-muted-foreground mt-1" data-testid={`text-escalation-description-${escalation.id}`}>
                                 {escalation.description}
                               </p>
-                              <p className="text-xs text-muted-foreground mt-1">
+                              <p className="text-xs text-gray-600 mt-1 font-medium">
                                 Created: {escalation.createdAt ? new Date(escalation.createdAt).toLocaleString() : 'Unknown'}
                               </p>
                             </div>
@@ -278,7 +278,7 @@ export default function EscalationsTab() {
                               <p className="text-sm text-muted-foreground mt-1" data-testid={`text-escalation-description-${escalation.id}`}>
                                 {escalation.description}
                               </p>
-                              <p className="text-xs text-muted-foreground mt-1">
+                              <p className="text-xs text-gray-600 mt-1 font-medium">
                                 Created: {escalation.createdAt ? new Date(escalation.createdAt).toLocaleString() : 'Unknown'}
                               </p>
                             </div>
@@ -359,7 +359,7 @@ export default function EscalationsTab() {
                               <p className="text-sm text-muted-foreground mt-1" data-testid={`text-escalation-description-${escalation.id}`}>
                                 {escalation.description}
                               </p>
-                              <p className="text-xs text-muted-foreground mt-1">
+                              <p className="text-xs text-gray-600 mt-1 font-medium">
                                 Created: {escalation.createdAt ? new Date(escalation.createdAt).toLocaleString() : 'Unknown'}
                               </p>
                             </div>
