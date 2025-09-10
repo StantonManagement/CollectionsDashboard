@@ -7,7 +7,14 @@ import CollectionsQueue from "@/components/collections-queue";
 import TabbedInterface from "@/components/tabbed-interface";
 
 export default function Dashboard() {
-  const { data: stats, isLoading: statsLoading } = useQuery({
+  const { data: stats, isLoading: statsLoading } = useQuery<{
+    pending: number;
+    active: number;
+    approval: number;
+    escalated: number;
+    totalTenants: number;
+    totalOwed: number;
+  }>({
     queryKey: ["/api/dashboard/stats"],
   });
 
@@ -33,16 +40,16 @@ export default function Dashboard() {
               </h1>
               <div className="flex items-center space-x-3">
                 <Badge variant="secondary" className="bg-orange-100 text-orange-800 hover:bg-orange-200" data-testid="badge-pending">
-                  Pending: {stats?.pending || 0}
+                  Pending: {stats?.pending ?? 0}
                 </Badge>
                 <Badge variant="secondary" className="bg-blue-100 text-blue-800 hover:bg-blue-200" data-testid="badge-active">
-                  Active: {stats?.active || 0}
+                  Active: {stats?.active ?? 0}
                 </Badge>
                 <Badge variant="secondary" className="bg-purple-100 text-purple-800 hover:bg-purple-200" data-testid="badge-approval">
-                  Approval: {stats?.approval || 0}
+                  Approval: {stats?.approval ?? 0}
                 </Badge>
                 <Badge variant="secondary" className="bg-red-100 text-red-800 hover:bg-red-200" data-testid="badge-escalated">
-                  Escalated: {stats?.escalated || 0}
+                  Escalated: {stats?.escalated ?? 0}
                 </Badge>
               </div>
             </div>
@@ -81,12 +88,12 @@ export default function Dashboard() {
           
           <div className="mt-auto space-y-4 text-center">
             <div className="text-xs text-muted-foreground">
-              <div className="font-semibold text-foreground" data-testid="text-total-count">{stats?.totalTenants || 0}</div>
+              <div className="font-semibold text-foreground" data-testid="text-total-count">{stats?.totalTenants ?? 0}</div>
               <div>Total</div>
             </div>
             <div className="text-xs text-muted-foreground">
               <div className="font-semibold text-foreground" data-testid="text-total-owed">
-                ${Math.round((stats?.totalOwed || 0) / 1000)}k
+                ${Math.round((stats?.totalOwed ?? 0) / 1000)}k
               </div>
               <div>Owed</div>
             </div>

@@ -119,6 +119,8 @@ export class MemStorage implements IStorage {
       const fullTenant: Tenant = {
         ...tenant,
         id,
+        language: tenant.language || "English",
+        notes: tenant.notes || null,
         lastContact: new Date(Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000),
         createdAt: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000)
       };
@@ -133,40 +135,60 @@ export class MemStorage implements IStorage {
           id: randomUUID(),
           sender: "ai",
           content: index === 0 
-            ? "Hola Maria, su renta de $567 está 47 días atrasada. ¿Podemos establecer un plan de pagos?"
+            ? "Hello Maria, your rent of $567 is 47 days overdue. Can we set up a payment plan?"
             : "Hi, your rent payment of $890 is 34 days overdue. Can we set up a payment plan?",
+          originalContent: index === 0 
+            ? "Hola Maria, su renta de $567 está 47 días atrasada. ¿Podemos establecer un plan de pagos?"
+            : undefined,
+          language: index === 0 ? "Spanish" : "English",
           timestamp: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString()
         },
         {
           id: randomUUID(),
           sender: "tenant",
           content: index === 0
-            ? "Hola, si puedo hacer plan de pagos. ¿Cuando puedo empezar?"
+            ? "Hello, yes I can do a payment plan. When can I start?"
             : "Yes, I can do a payment plan. When can I start?",
+          originalContent: index === 0
+            ? "Hola, si puedo hacer plan de pagos. ¿Cuando puedo empezar?"
+            : undefined,
+          language: index === 0 ? "Spanish" : "English",
           timestamp: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString()
         },
         {
           id: randomUUID(),
           sender: "ai",
           content: index === 0
-            ? "Podemos empezar este viernes. ¿$75 por semana por 8 semanas?"
+            ? "We can start this Friday. How about $75 per week for 8 weeks?"
             : "We can start this Friday. How about $120 per week for 8 weeks?",
+          originalContent: index === 0
+            ? "Podemos empezar este viernes. ¿$75 por semana por 8 semanas?"
+            : undefined,
+          language: index === 0 ? "Spanish" : "English",
           timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString()
         },
         {
           id: randomUUID(),
           sender: "tenant",
           content: index === 0
-            ? "Si, puedo pagar $75 por semana por 8 semanas empezando viernes"
+            ? "Yes, I can pay $75 per week for 8 weeks starting Friday"
             : "I can do $50 every two weeks starting next Friday, that should work for both of us",
+          originalContent: index === 0
+            ? "Si, puedo pagar $75 por semana por 8 semanas empezando viernes"
+            : undefined,
+          language: index === 0 ? "Spanish" : "English",
           timestamp: new Date(Date.now() - 30 * 60 * 1000).toISOString()
         },
         {
           id: randomUUID(),
           sender: "ai",
           content: index === 0
-            ? "¡Perfecto Maria! $75 por semana por 8 semanas cubre el total de $600. ¿Podemos confirmar que empezará este viernes 12 de enero? Te enviaré recordatorios cada jueves. - Stanton Management"
+            ? "Perfect Maria! $75 per week for 8 weeks covers the total of $600. Can we confirm you'll start this Friday, January 12th? I'll send you reminders every Thursday. - Stanton Management"
             : "Hi James! $50 every two weeks works great. That means $100 per month, so it would take about 9 payments to cover your balance of $890. Can we confirm the first payment for January 19th? - Stanton Management",
+          originalContent: index === 0
+            ? "¡Perfecto Maria! $75 por semana por 8 semanas cubre el total de $600. ¿Podemos confirmar que empezará este viernes 12 de enero? Te enviaré recordatorios cada jueves. - Stanton Management"
+            : undefined,
+          language: index === 0 ? "Spanish" : "English",
           timestamp: new Date().toISOString(),
           needsApproval: true
         }
@@ -195,7 +217,7 @@ export class MemStorage implements IStorage {
       const paymentPlan: PaymentPlan = {
         id: planId,
         tenantId: conversation.tenantId,
-        conversationId,
+        conversationId: conversationId,
         weeklyAmount: index === 0 ? "75.00" : "50.00",
         duration: index === 0 ? 8 : 18,
         totalAmount: index === 0 ? "600.00" : "900.00",
@@ -222,6 +244,7 @@ export class MemStorage implements IStorage {
           ? "Primary phone (555-321-9876) failed after 3 attempts"
           : "AI detected threatening language: 'I'm going to sue you people'",
         status: "open",
+        resolvedAt: null,
         createdAt: new Date(Date.now() - index * 60 * 60 * 1000)
       };
       this.escalations.set(escalationId, escalation);
@@ -242,6 +265,8 @@ export class MemStorage implements IStorage {
     const tenant: Tenant = {
       ...insertTenant,
       id,
+      lastContact: insertTenant.lastContact || null,
+      notes: insertTenant.notes || null,
       createdAt: new Date()
     };
     this.tenants.set(id, tenant);
@@ -275,6 +300,8 @@ export class MemStorage implements IStorage {
     const conversation: Conversation = {
       ...insertConversation,
       id,
+      confidence: insertConversation.confidence || null,
+      lastMessageAt: insertConversation.lastMessageAt || null,
       startedAt: new Date()
     };
     this.conversations.set(id, conversation);
@@ -337,6 +364,7 @@ export class MemStorage implements IStorage {
     const escalation: Escalation = {
       ...insertEscalation,
       id,
+      resolvedAt: insertEscalation.resolvedAt || null,
       createdAt: new Date()
     };
     this.escalations.set(id, escalation);

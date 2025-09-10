@@ -14,11 +14,11 @@ export default function EscalationsTab() {
   const { toast } = useToast();
   const [expandedSections, setExpandedSections] = useState<string[]>(["immediate", "same_day"]);
 
-  const { data: escalations = [], isLoading: escalationsLoading } = useQuery({
+  const { data: escalations = [], isLoading: escalationsLoading } = useQuery<Escalation[]>({
     queryKey: ["/api/escalations"],
   });
 
-  const { data: tenants = [], isLoading: tenantsLoading } = useQuery({
+  const { data: tenants = [], isLoading: tenantsLoading } = useQuery<Tenant[]>({
     queryKey: ["/api/tenants"],
   });
 
@@ -32,18 +32,18 @@ export default function EscalationsTab() {
     },
   });
 
-  const openEscalations = escalations.filter((esc: Escalation) => esc.status === "open");
+  const openEscalations = escalations.filter((esc) => esc.status === "open");
 
   const groupEscalationsByPriority = () => {
     return {
-      immediate: openEscalations.filter((esc: Escalation) => esc.priority === "immediate"),
-      same_day: openEscalations.filter((esc: Escalation) => esc.priority === "same_day"),
-      next_business_day: openEscalations.filter((esc: Escalation) => esc.priority === "next_business_day"),
+      immediate: openEscalations.filter((esc) => esc.priority === "immediate"),
+      same_day: openEscalations.filter((esc) => esc.priority === "same_day"),
+      next_business_day: openEscalations.filter((esc) => esc.priority === "next_business_day"),
     };
   };
 
   const getTenantById = (tenantId: string) => {
-    return tenants.find((t: Tenant) => t.id === tenantId);
+    return tenants.find((t) => t.id === tenantId);
   };
 
   const getPriorityIcon = (priority: string) => {
@@ -182,7 +182,7 @@ export default function EscalationsTab() {
                                 {escalation.description}
                               </p>
                               <p className="text-xs text-muted-foreground mt-1">
-                                Created: {new Date(escalation.createdAt).toLocaleString()}
+                                Created: {escalation.createdAt ? new Date(escalation.createdAt).toLocaleString() : 'Unknown'}
                               </p>
                             </div>
                           </div>
@@ -279,7 +279,7 @@ export default function EscalationsTab() {
                                 {escalation.description}
                               </p>
                               <p className="text-xs text-muted-foreground mt-1">
-                                Created: {new Date(escalation.createdAt).toLocaleString()}
+                                Created: {escalation.createdAt ? new Date(escalation.createdAt).toLocaleString() : 'Unknown'}
                               </p>
                             </div>
                           </div>
@@ -360,7 +360,7 @@ export default function EscalationsTab() {
                                 {escalation.description}
                               </p>
                               <p className="text-xs text-muted-foreground mt-1">
-                                Created: {new Date(escalation.createdAt).toLocaleString()}
+                                Created: {escalation.createdAt ? new Date(escalation.createdAt).toLocaleString() : 'Unknown'}
                               </p>
                             </div>
                           </div>

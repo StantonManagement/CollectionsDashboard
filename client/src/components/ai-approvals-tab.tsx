@@ -12,11 +12,11 @@ export default function AiApprovalsTab() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  const { data: conversations = [], isLoading: conversationsLoading } = useQuery({
+  const { data: conversations = [], isLoading: conversationsLoading } = useQuery<Conversation[]>({
     queryKey: ["/api/conversations"],
   });
 
-  const { data: tenants = [], isLoading: tenantsLoading } = useQuery({
+  const { data: tenants = [], isLoading: tenantsLoading } = useQuery<Tenant[]>({
     queryKey: ["/api/tenants"],
   });
 
@@ -30,7 +30,7 @@ export default function AiApprovalsTab() {
     },
   });
 
-  const pendingApprovals = conversations.filter((conv: Conversation) => {
+  const pendingApprovals = conversations.filter((conv) => {
     if (!Array.isArray(conv.messages)) return false;
     return conv.messages.some((msg: Message) => msg.needsApproval);
   });
@@ -95,7 +95,7 @@ export default function AiApprovalsTab() {
   };
 
   const getTenantById = (tenantId: string) => {
-    return tenants.find((t: Tenant) => t.id === tenantId);
+    return tenants.find((t) => t.id === tenantId);
   };
 
   if (conversationsLoading || tenantsLoading) {

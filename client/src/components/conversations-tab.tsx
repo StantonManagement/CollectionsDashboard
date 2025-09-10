@@ -9,18 +9,18 @@ import { MessageSquare, User, Phone, AlertTriangle } from "lucide-react";
 import type { Conversation, Tenant, Message } from "@shared/schema";
 
 export default function ConversationsTab() {
-  const { data: conversations = [], isLoading: conversationsLoading } = useQuery({
+  const { data: conversations = [], isLoading: conversationsLoading } = useQuery<Conversation[]>({
     queryKey: ["/api/conversations"],
   });
 
-  const { data: tenants = [], isLoading: tenantsLoading } = useQuery({
+  const { data: tenants = [], isLoading: tenantsLoading } = useQuery<Tenant[]>({
     queryKey: ["/api/tenants"],
   });
 
-  const activeConversations = conversations.filter((conv: Conversation) => conv.status === "active");
+  const activeConversations = conversations.filter((conv) => conv.status === "active");
 
   const getTenantById = (tenantId: string) => {
-    return tenants.find((t: Tenant) => t.id === tenantId);
+    return tenants.find((t) => t.id === tenantId);
   };
 
   const getStatusColor = (status: string) => {

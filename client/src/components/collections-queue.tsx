@@ -14,20 +14,20 @@ export default function CollectionsQueue() {
   const [priorityFilter, setPriorityFilter] = useState<string>("all");
   const [statusFilter, setStatusFilter] = useState<string>("all");
 
-  const { data: tenants = [], isLoading } = useQuery({
+  const { data: tenants = [], isLoading } = useQuery<Tenant[]>({
     queryKey: ["/api/tenants"],
   });
 
-  const filteredTenants = tenants.filter((tenant: Tenant) => {
+  const filteredTenants = tenants.filter((tenant) => {
     if (priorityFilter !== "all" && tenant.priority !== priorityFilter) return false;
     if (statusFilter !== "all" && tenant.status !== statusFilter) return false;
     return true;
   });
 
   const priorityCounts = {
-    high: tenants.filter((t: Tenant) => t.priority === "high").length,
-    medium: tenants.filter((t: Tenant) => t.priority === "medium").length,
-    low: tenants.filter((t: Tenant) => t.priority === "low").length,
+    high: tenants.filter((t) => t.priority === "high").length,
+    medium: tenants.filter((t) => t.priority === "medium").length,
+    low: tenants.filter((t) => t.priority === "low").length,
   };
 
   const getPriorityColor = (priority: string) => {
@@ -182,7 +182,7 @@ export default function CollectionsQueue() {
 
       {/* Queue Items */}
       <div className="space-y-4 max-h-[calc(100vh-300px)] overflow-y-auto">
-        {filteredTenants.map((tenant: Tenant) => (
+        {filteredTenants.map((tenant) => (
           <Card key={tenant.id} className={`border-l-4 ${getPriorityColor(tenant.priority)} p-4 shadow-sm`} data-testid={`card-tenant-${tenant.id}`}>
             <div className="flex items-start justify-between">
               <div className="flex items-start space-x-3 flex-1">

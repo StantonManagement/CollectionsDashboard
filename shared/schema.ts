@@ -93,6 +93,8 @@ export type Message = {
   id: string;
   sender: "tenant" | "ai" | "manager";
   content: string;
+  originalContent?: string; // For non-English messages
+  language?: string; // Language of the original content
   timestamp: string;
   needsApproval?: boolean;
 };

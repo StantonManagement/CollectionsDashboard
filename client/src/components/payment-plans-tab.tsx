@@ -12,11 +12,11 @@ export default function PaymentPlansTab() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  const { data: paymentPlans = [], isLoading: plansLoading } = useQuery({
+  const { data: paymentPlans = [], isLoading: plansLoading } = useQuery<PaymentPlan[]>({
     queryKey: ["/api/payment-plans"],
   });
 
-  const { data: tenants = [], isLoading: tenantsLoading } = useQuery({
+  const { data: tenants = [], isLoading: tenantsLoading } = useQuery<Tenant[]>({
     queryKey: ["/api/tenants"],
   });
 
@@ -30,10 +30,10 @@ export default function PaymentPlansTab() {
     },
   });
 
-  const pendingPlans = paymentPlans.filter((plan: PaymentPlan) => plan.status === "proposed");
+  const pendingPlans = paymentPlans.filter((plan) => plan.status === "proposed");
 
   const getTenantById = (tenantId: string) => {
-    return tenants.find((t: Tenant) => t.id === tenantId);
+    return tenants.find((t) => t.id === tenantId);
   };
 
   const getRiskLevel = (coverage: number, tenant: Tenant) => {
