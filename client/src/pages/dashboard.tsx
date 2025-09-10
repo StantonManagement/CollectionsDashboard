@@ -79,10 +79,10 @@ export default function Dashboard() {
           <Button size="icon" className="bg-primary text-primary-foreground" data-testid="button-nav-home">
             <Home className="h-5 w-5" />
           </Button>
-          <Button variant="ghost" size="icon" className="text-muted-foreground" data-testid="button-nav-queue">
+          <Button variant="ghost" size="icon" className="text-slate-600 hover:text-slate-800 hover:bg-slate-100" data-testid="button-nav-queue">
             <List className="h-5 w-5" />
           </Button>
-          <Button variant="ghost" size="icon" className="text-muted-foreground" data-testid="button-nav-settings">
+          <Button variant="ghost" size="icon" className="text-slate-600 hover:text-slate-800 hover:bg-slate-100" data-testid="button-nav-settings">
             <Settings className="h-5 w-5" />
           </Button>
           
