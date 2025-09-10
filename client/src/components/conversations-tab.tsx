@@ -238,18 +238,18 @@ export default function ConversationsTab() {
                                   key={message.id}
                                   className={`p-3 rounded-lg ${
                                     message.sender === "tenant" 
-                                      ? "bg-blue-50 border-l-4 border-blue-400" 
+                                      ? "bg-slate-50 border-l-4 border-slate-400" 
                                       : message.sender === "ai" 
-                                      ? "bg-purple-50 border-l-4 border-purple-400"
+                                      ? "bg-stone-50 border-l-4 border-stone-400"
                                       : "bg-gray-50 border-l-4 border-gray-400"
                                   }`}
                                   data-testid={`message-${message.id}`}
                                 >
                                   <div className="flex items-center space-x-2 mb-1">
                                     {message.sender === "tenant" ? (
-                                      <User className="h-4 w-4 text-blue-600" />
+                                      <User className="h-4 w-4 text-slate-600" />
                                     ) : message.sender === "ai" ? (
-                                      <span className="text-purple-600">🤖</span>
+                                      <span className="text-stone-600">🤖</span>
                                     ) : (
                                       <span className="text-gray-600">👤</span>
                                     )}
@@ -264,9 +264,9 @@ export default function ConversationsTab() {
                                     {message.originalContent && (
                                       <span className={`text-xs px-2 py-1 rounded-full font-medium ${
                                         message.sender === "tenant" 
-                                          ? "bg-blue-100 text-blue-700" 
+                                          ? "bg-slate-100 text-slate-700" 
                                           : message.sender === "ai" 
-                                          ? "bg-purple-100 text-purple-700"
+                                          ? "bg-stone-100 text-stone-700"
                                           : "bg-gray-100 text-gray-700"
                                       }`}>
                                         {showOriginalLanguage[conversation.id] ? 'Spanish' : 'English'}

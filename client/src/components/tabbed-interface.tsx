@@ -13,9 +13,9 @@ export default function TabbedInterface() {
 
   const tabs = [
     { id: "approvals", label: "AI Approvals", badge: 12, badgeColor: "bg-primary text-primary-foreground" },
-    { id: "plans", label: "Payment Plans", badge: 3, badgeColor: "bg-orange-500 text-white" },
+    { id: "plans", label: "Payment Plans", badge: 3, badgeColor: "bg-stone-600 text-white" },
     { id: "conversations", label: "Conversations", badge: null, badgeColor: "" },
-    { id: "escalations", label: "Escalations", badge: 2, badgeColor: "bg-red-500 text-white" },
+    { id: "escalations", label: "Escalations", badge: 2, badgeColor: "bg-neutral-600 text-white" },
   ];
 
   return (

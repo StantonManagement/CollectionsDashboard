@@ -32,30 +32,30 @@ export default function CollectionsQueue() {
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case "high": return "border-red-500";
-      case "medium": return "border-yellow-500";
-      case "low": return "border-green-500";
+      case "high": return "border-neutral-600";
+      case "medium": return "border-stone-500";
+      case "low": return "border-slate-500";
       default: return "border-gray-300";
     }
   };
 
   const getPriorityBadgeColor = (priority: string) => {
     switch (priority) {
-      case "high": return "bg-red-100 text-red-800";
-      case "medium": return "bg-yellow-100 text-yellow-800";
-      case "low": return "bg-green-100 text-green-800";
+      case "high": return "bg-neutral-100 text-neutral-800";
+      case "medium": return "bg-stone-100 text-stone-800";
+      case "low": return "bg-slate-100 text-slate-800";
       default: return "bg-gray-100 text-gray-800";
     }
   };
 
   const getStatusBadgeColor = (status: string) => {
     switch (status) {
-      case "pending": return "bg-gray-100 text-gray-800";
-      case "in_progress": return "bg-blue-100 text-blue-800";
-      case "awaiting_approval": return "bg-orange-100 text-orange-800";
-      case "negotiating": return "bg-purple-100 text-purple-800";
-      case "escalated": return "bg-red-100 text-red-800";
-      case "completed": return "bg-green-100 text-green-800";
+      case "pending": return "bg-slate-100 text-slate-800";
+      case "in_progress": return "bg-stone-100 text-stone-800";
+      case "awaiting_approval": return "bg-neutral-100 text-neutral-800";
+      case "negotiating": return "bg-zinc-100 text-zinc-800";
+      case "escalated": return "bg-gray-200 text-gray-900";
+      case "completed": return "bg-slate-200 text-slate-900";
       default: return "bg-gray-100 text-gray-800";
     }
   };
@@ -104,30 +104,30 @@ export default function CollectionsQueue() {
             variant={priorityFilter === "high" ? "default" : "outline"}
             size="sm"
             onClick={() => setPriorityFilter(priorityFilter === "high" ? "all" : "high")}
-            className={`${priorityFilter === "high" ? "" : "bg-red-100 text-red-800 hover:bg-red-200"}`}
+            className={`${priorityFilter === "high" ? "" : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200"}`}
             data-testid="button-filter-high"
           >
-            <span className="w-2 h-2 bg-red-500 rounded-full mr-2"></span>
+            <span className="w-2 h-2 bg-neutral-600 rounded-full mr-2"></span>
             High: {priorityCounts.high}
           </Button>
           <Button
             variant={priorityFilter === "medium" ? "default" : "outline"}
             size="sm"
             onClick={() => setPriorityFilter(priorityFilter === "medium" ? "all" : "medium")}
-            className={`${priorityFilter === "medium" ? "" : "bg-yellow-100 text-yellow-800 hover:bg-yellow-200"}`}
+            className={`${priorityFilter === "medium" ? "" : "bg-stone-100 text-stone-700 hover:bg-stone-200"}`}
             data-testid="button-filter-medium"
           >
-            <span className="w-2 h-2 bg-yellow-500 rounded-full mr-2"></span>
+            <span className="w-2 h-2 bg-stone-500 rounded-full mr-2"></span>
             Medium: {priorityCounts.medium}
           </Button>
           <Button
             variant={priorityFilter === "low" ? "default" : "outline"}
             size="sm"
             onClick={() => setPriorityFilter(priorityFilter === "low" ? "all" : "low")}
-            className={`${priorityFilter === "low" ? "" : "bg-green-100 text-green-800 hover:bg-green-200"}`}
+            className={`${priorityFilter === "low" ? "" : "bg-slate-100 text-slate-700 hover:bg-slate-200"}`}
             data-testid="button-filter-low"
           >
-            <span className="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+            <span className="w-2 h-2 bg-slate-500 rounded-full mr-2"></span>
             Low: {priorityCounts.low}
           </Button>
         </div>

@@ -169,13 +169,13 @@ export default function EscalationsTab() {
                   if (!tenant) return null;
 
                   return (
-                    <Card key={escalation.id} className="bg-white border-red-200" data-testid={`card-escalation-${escalation.id}`}>
+                    <Card key={escalation.id} className="bg-white border-neutral-200" data-testid={`card-escalation-${escalation.id}`}>
                       <div className="p-4">
                         <div className="flex items-start justify-between mb-3">
                           <div className="flex items-start space-x-3">
                             <span className="text-2xl">{getTypeIcon(escalation.type)}</span>
                             <div>
-                              <h5 className="font-semibold text-red-700" data-testid={`text-escalation-title-${escalation.id}`}>
+                              <h5 className="font-semibold text-neutral-700" data-testid={`text-escalation-title-${escalation.id}`}>
                                 {formatTypeLabel(escalation.type)} - {tenant.name} - {tenant.unit}
                               </h5>
                               <p className="text-sm text-muted-foreground mt-1" data-testid={`text-escalation-description-${escalation.id}`}>
@@ -191,11 +191,11 @@ export default function EscalationsTab() {
                           <div className="flex items-center space-x-2">
                             {escalation.type === "phone_failed" && (
                               <>
-                                <Button variant="outline" size="sm" className="text-blue-600 hover:text-blue-700" data-testid={`button-try-alt-phone-${escalation.id}`}>
+                                <Button variant="outline" size="sm" className="text-slate-600 hover:text-slate-700" data-testid={`button-try-alt-phone-${escalation.id}`}>
                                   <Phone className="h-4 w-4 mr-2" />
                                   Try Alt Phone
                                 </Button>
-                                <Button variant="outline" size="sm" className="text-green-600 hover:text-green-700" data-testid={`button-manual-call-${escalation.id}`}>
+                                <Button variant="outline" size="sm" className="text-stone-600 hover:text-stone-700" data-testid={`button-manual-call-${escalation.id}`}>
                                   <Phone className="h-4 w-4 mr-2" />
                                   Manual Call
                                 </Button>
@@ -203,11 +203,11 @@ export default function EscalationsTab() {
                             )}
                             {escalation.type === "threatening" && (
                               <>
-                                <Button variant="outline" size="sm" className="text-orange-600 hover:text-orange-700" data-testid={`button-review-messages-${escalation.id}`}>
+                                <Button variant="outline" size="sm" className="text-neutral-600 hover:text-neutral-700" data-testid={`button-review-messages-${escalation.id}`}>
                                   <FileText className="h-4 w-4 mr-2" />
                                   Review Messages
                                 </Button>
-                                <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700" data-testid={`button-legal-consult-${escalation.id}`}>
+                                <Button variant="outline" size="sm" className="text-zinc-600 hover:text-zinc-700" data-testid={`button-legal-consult-${escalation.id}`}>
                                   <AlertTriangle className="h-4 w-4 mr-2" />
                                   Legal Consult
                                 </Button>

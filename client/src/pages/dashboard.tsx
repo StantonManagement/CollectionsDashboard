@@ -39,16 +39,16 @@ export default function Dashboard() {
                 Stanton Management
               </h1>
               <div className="flex items-center space-x-3">
-                <Badge variant="secondary" className="bg-orange-100 text-orange-800 hover:bg-orange-200" data-testid="badge-pending">
+                <Badge variant="secondary" className="bg-slate-100 text-slate-700 hover:bg-slate-200" data-testid="badge-pending">
                   Pending: {stats?.pending ?? 0}
                 </Badge>
-                <Badge variant="secondary" className="bg-blue-100 text-blue-800 hover:bg-blue-200" data-testid="badge-active">
+                <Badge variant="secondary" className="bg-slate-200 text-slate-800 hover:bg-slate-300" data-testid="badge-active">
                   Active: {stats?.active ?? 0}
                 </Badge>
-                <Badge variant="secondary" className="bg-purple-100 text-purple-800 hover:bg-purple-200" data-testid="badge-approval">
+                <Badge variant="secondary" className="bg-stone-200 text-stone-800 hover:bg-stone-300" data-testid="badge-approval">
                   Approval: {stats?.approval ?? 0}
                 </Badge>
-                <Badge variant="secondary" className="bg-red-100 text-red-800 hover:bg-red-200" data-testid="badge-escalated">
+                <Badge variant="secondary" className="bg-neutral-200 text-neutral-800 hover:bg-neutral-300" data-testid="badge-escalated">
                   Escalated: {stats?.escalated ?? 0}
                 </Badge>
               </div>
@@ -57,7 +57,7 @@ export default function Dashboard() {
               <div className="relative">
                 <Button variant="ghost" size="icon" className="relative" data-testid="button-notifications">
                   <Bell className="h-5 w-5" />
-                  <Badge className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center p-0">
+                  <Badge className="absolute -top-1 -right-1 bg-neutral-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center p-0">
                     12
                   </Badge>
                 </Button>

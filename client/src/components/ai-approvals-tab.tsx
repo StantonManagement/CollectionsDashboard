@@ -217,10 +217,10 @@ export default function AiApprovalsTab() {
 
               <div className="p-4 space-y-4">
                 {/* Tenant Message */}
-                <div className="bg-blue-50 border-l-4 border-blue-400 p-3 rounded">
+                <div className="bg-slate-50 border-l-4 border-slate-400 p-3 rounded">
                   <div className="flex items-center space-x-2 mb-2">
-                    <User className="h-4 w-4 text-blue-600" />
-                    <span className="text-sm font-medium text-blue-800">TENANT SAID:</span>
+                    <User className="h-4 w-4 text-slate-600" />
+                    <span className="text-sm font-medium text-slate-800">TENANT SAID:</span>
                   </div>
                   <p className="text-sm" data-testid={`text-tenant-message-${conversation.id}`}>
                     "{getDisplayContent(lastTenantMessage, conversation.id)}"
@@ -230,7 +230,7 @@ export default function AiApprovalsTab() {
                       {new Date(lastTenantMessage.timestamp).toLocaleTimeString()}
                     </p>
                     {lastTenantMessage.originalContent && (
-                      <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-medium">
+                      <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded-full font-medium">
                         {showOriginalLanguage[conversation.id] ? 'Spanish' : 'English'}
                       </span>
                     )}
@@ -238,17 +238,17 @@ export default function AiApprovalsTab() {
                 </div>
 
                 {/* AI Response */}
-                <div className="bg-purple-50 border-l-4 border-purple-400 p-3 rounded">
+                <div className="bg-stone-50 border-l-4 border-stone-400 p-3 rounded">
                   <div className="flex items-center space-x-2 mb-2">
-                    <div className="h-4 w-4 text-purple-600">🤖</div>
-                    <span className="text-sm font-medium text-purple-800">AI WANTS TO RESPOND:</span>
+                    <div className="h-4 w-4 text-stone-600">🤖</div>
+                    <span className="text-sm font-medium text-stone-800">AI WANTS TO RESPOND:</span>
                   </div>
                   <p className="text-sm" data-testid={`text-ai-response-${conversation.id}`}>
                     "{getDisplayContent(pendingMessage, conversation.id)}"
                   </p>
                   {pendingMessage.originalContent && (
                     <div className="flex justify-end mt-2">
-                      <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full font-medium">
+                      <span className="text-xs bg-stone-100 text-stone-700 px-2 py-1 rounded-full font-medium">
                         {showOriginalLanguage[conversation.id] ? 'Spanish' : 'English'}
                       </span>
                     </div>
@@ -256,22 +256,22 @@ export default function AiApprovalsTab() {
                 </div>
 
                 {/* Plan Validation */}
-                <div className={`border rounded p-3 ${conversation.confidence && conversation.confidence >= 85 ? 'bg-green-50 border-green-200' : 'bg-yellow-50 border-yellow-200'}`}>
+                <div className={`border rounded p-3 ${conversation.confidence && conversation.confidence >= 85 ? 'bg-slate-50 border-slate-200' : 'bg-neutral-50 border-neutral-200'}`}>
                   <div className="space-y-2 text-sm">
                     <div className="flex items-center space-x-2">
                       {conversation.confidence && conversation.confidence >= 85 ? (
-                        <Check className="h-4 w-4 text-green-600" />
+                        <Check className="h-4 w-4 text-slate-600" />
                       ) : (
-                        <AlertTriangle className="h-4 w-4 text-yellow-600" />
+                        <AlertTriangle className="h-4 w-4 text-neutral-600" />
                       )}
                       <span>Payment plan extracted from conversation</span>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <Check className="h-4 w-4 text-green-600" />
+                      <Check className="h-4 w-4 text-slate-600" />
                       <span>Within policy limits</span>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <Check className="h-4 w-4 text-green-600" />
+                      <Check className="h-4 w-4 text-slate-600" />
                       <span>Appropriate tone and language</span>
                     </div>
                   </div>
