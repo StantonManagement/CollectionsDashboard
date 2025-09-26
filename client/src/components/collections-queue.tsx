@@ -152,7 +152,7 @@ export default function CollectionsQueue({ fullWidth = false }: CollectionsQueue
                 <SelectItem value="escalated">Escalated</SelectItem>
               </SelectContent>
             </Select>
-            <Select defaultValue="all">
+            <Select defaultValue="all" onValueChange={(value) => alert(`Property filter API needed: Filter by ${value}`)}>
               <SelectTrigger className="w-40" data-testid="select-property-filter">
                 <SelectValue placeholder="All Properties" />
               </SelectTrigger>
@@ -163,7 +163,7 @@ export default function CollectionsQueue({ fullWidth = false }: CollectionsQueue
                 <SelectItem value="pine_heights">Pine Heights</SelectItem>
               </SelectContent>
             </Select>
-            <Select defaultValue="priority">
+            <Select defaultValue="priority" onValueChange={(value) => alert(`Sorting API needed: Sort by ${value}`)}>
               <SelectTrigger className="w-40" data-testid="select-sort">
                 <SelectValue />
               </SelectTrigger>
@@ -177,6 +177,7 @@ export default function CollectionsQueue({ fullWidth = false }: CollectionsQueue
           <Button 
             className="bg-primary text-primary-foreground hover:bg-primary/90" 
             disabled={selectedTenants.length === 0}
+            onClick={() => alert(`Bulk processing API needed: Start ${selectedTenants.length} selected tenants (IDs: ${selectedTenants.join(', ')})`)}
             data-testid="button-start-selected"
           >
             Start Selected ({selectedTenants.length})
@@ -227,13 +228,31 @@ export default function CollectionsQueue({ fullWidth = false }: CollectionsQueue
                     <Badge className={getStatusBadgeColor(tenant.status)} data-testid={`badge-status-${tenant.id}`}>
                       {formatStatus(tenant.status)}
                     </Badge>
-                    <Button variant="link" size="sm" className="text-primary hover:underline p-0 h-auto" data-testid={`button-view-conversation-${tenant.id}`}>
+                    <Button 
+                      variant="link" 
+                      size="sm" 
+                      className="text-primary hover:underline p-0 h-auto" 
+                      onClick={() => alert(`Conversation modal API needed: Open conversation for tenant ${tenant.name} (ID: ${tenant.id})`)}
+                      data-testid={`button-view-conversation-${tenant.id}`}
+                    >
                       View Conversation
                     </Button>
-                    <Button variant="link" size="sm" className="text-primary hover:underline p-0 h-auto" data-testid={`button-start-${tenant.id}`}>
+                    <Button 
+                      variant="link" 
+                      size="sm" 
+                      className="text-primary hover:underline p-0 h-auto" 
+                      onClick={() => alert(`Individual processing API needed: Start collection process for ${tenant.name} (ID: ${tenant.id})`)}
+                      data-testid={`button-start-${tenant.id}`}
+                    >
                       Start
                     </Button>
-                    <Button variant="link" size="sm" className="text-primary hover:underline p-0 h-auto flex items-center" data-testid={`button-call-${tenant.id}`}>
+                    <Button 
+                      variant="link" 
+                      size="sm" 
+                      className="text-primary hover:underline p-0 h-auto flex items-center" 
+                      onClick={() => alert(`Phone integration API needed: Call ${tenant.name} at ${tenant.phone} (ID: ${tenant.id})`)}
+                      data-testid={`button-call-${tenant.id}`}
+                    >
                       <Phone className="h-3 w-3 mr-1" />
                       Call
                     </Button>

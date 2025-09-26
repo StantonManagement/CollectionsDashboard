@@ -126,11 +126,12 @@ export default function PaymentPlansTab() {
             <Button 
               className="bg-green-600 text-white hover:bg-green-700"
               disabled={pendingPlans.length === 0}
+              onClick={() => alert(`Email generation API needed: Generate bookkeeper email for ${pendingPlans.length} pending payment plans`)}
               data-testid="button-generate-bookkeeper-email"
             >
               Generate Bookkeeper Email
             </Button>
-            <Select defaultValue="all">
+            <Select defaultValue="all" onValueChange={(value) => alert(`Risk filtering API needed: Filter payment plans by ${value} risk level`)}>
               <SelectTrigger className="w-40" data-testid="select-risk-filter">
                 <SelectValue />
               </SelectTrigger>
@@ -218,15 +219,33 @@ export default function PaymentPlansTab() {
                 {/* Action Buttons */}
                 <div className="flex items-center justify-between pt-4 border-t border-border">
                   <div className="flex items-center space-x-3">
-                    <Button variant="link" size="sm" className="text-primary hover:underline p-0 h-auto flex items-center space-x-1" data-testid={`button-view-conversation-${plan.id}`}>
+                    <Button 
+                      variant="link" 
+                      size="sm" 
+                      className="text-primary hover:underline p-0 h-auto flex items-center space-x-1" 
+                      onClick={() => alert(`Full conversation modal API needed: Open conversation for payment plan discussion with ${tenant.name} (Plan ID: ${plan.id})`)}
+                      data-testid={`button-view-conversation-${plan.id}`}
+                    >
                       <Scroll className="h-4 w-4" />
                       <span>View Full Conversation</span>
                     </Button>
-                    <Button variant="link" size="sm" className="text-primary hover:underline p-0 h-auto flex items-center space-x-1" data-testid={`button-tenant-profile-${plan.id}`}>
+                    <Button 
+                      variant="link" 
+                      size="sm" 
+                      className="text-primary hover:underline p-0 h-auto flex items-center space-x-1" 
+                      onClick={() => alert(`Tenant profile modal API needed: Open profile for ${tenant.name} (Tenant ID: ${tenant.id})`)}
+                      data-testid={`button-tenant-profile-${plan.id}`}
+                    >
                       <User className="h-4 w-4" />
                       <span>Tenant Profile</span>
                     </Button>
-                    <Button variant="link" size="sm" className="text-primary hover:underline p-0 h-auto flex items-center space-x-1" data-testid={`button-modify-terms-${plan.id}`}>
+                    <Button 
+                      variant="link" 
+                      size="sm" 
+                      className="text-primary hover:underline p-0 h-auto flex items-center space-x-1" 
+                      onClick={() => alert(`Plan modification API needed: Modify payment plan terms for ${tenant.name} (Plan ID: ${plan.id})`)}
+                      data-testid={`button-modify-terms-${plan.id}`}
+                    >
                       <Edit className="h-4 w-4" />
                       <span>Modify Terms</span>
                     </Button>
@@ -243,6 +262,7 @@ export default function PaymentPlansTab() {
                     </Button>
                     <Button 
                       className="bg-yellow-600 text-white hover:bg-yellow-700 flex items-center space-x-1"
+                      onClick={() => alert(`Counter-offer API needed: Create counter-offer for payment plan with ${tenant.name} (Plan ID: ${plan.id})`)}
                       data-testid={`button-counter-offer-${plan.id}`}
                     >
                       <Edit className="h-4 w-4" />

@@ -222,10 +222,18 @@ export default function SettingsPage() {
             </Card>
 
             <div className="flex space-x-4 pt-6">
-              <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
+              <Button 
+                className="bg-primary text-primary-foreground hover:bg-primary/90"
+                onClick={() => alert("Settings save API needed: Save all settings changes to database")}
+                data-testid="button-save-settings"
+              >
                 Save Changes
               </Button>
-              <Button variant="outline">
+              <Button 
+                variant="outline"
+                onClick={() => alert("Settings reset API needed: Reset all settings to default values")}
+                data-testid="button-reset-settings"
+              >
                 Reset to Defaults
               </Button>
             </div>

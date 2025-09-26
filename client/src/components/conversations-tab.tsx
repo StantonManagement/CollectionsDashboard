@@ -103,7 +103,7 @@ export default function ConversationsTab() {
             </div>
           </div>
           <div className="flex items-center space-x-3">
-            <Select defaultValue="all">
+            <Select defaultValue="all" onValueChange={(value) => alert(`Language filtering API needed: Filter conversations by ${value} language`)}>
               <SelectTrigger className="w-40" data-testid="select-language-filter">
                 <SelectValue />
               </SelectTrigger>
@@ -113,7 +113,7 @@ export default function ConversationsTab() {
                 <SelectItem value="spanish">Spanish</SelectItem>
               </SelectContent>
             </Select>
-            <Select defaultValue="active">
+            <Select defaultValue="active" onValueChange={(value) => alert(`Status filtering API needed: Filter conversations by ${value} status`)}>
               <SelectTrigger className="w-32" data-testid="select-status-filter">
                 <SelectValue />
               </SelectTrigger>
@@ -216,11 +216,23 @@ export default function ConversationsTab() {
                           <div>
                             <h5 className="font-medium mb-2">Quick Actions</h5>
                             <div className="space-y-2">
-                              <Button variant="outline" size="sm" className="w-full" data-testid={`button-escalate-${conversation.id}`}>
+                              <Button 
+                                variant="outline" 
+                                size="sm" 
+                                className="w-full" 
+                                onClick={() => alert(`Escalation API needed: Escalate conversation for ${tenant.name} (Conversation ID: ${conversation.id})`)}
+                                data-testid={`button-escalate-${conversation.id}`}
+                              >
                                 <AlertTriangle className="h-4 w-4 mr-2" />
                                 Escalate
                               </Button>
-                              <Button variant="outline" size="sm" className="w-full" data-testid={`button-call-tenant-modal-${conversation.id}`}>
+                              <Button 
+                                variant="outline" 
+                                size="sm" 
+                                className="w-full" 
+                                onClick={() => alert(`Phone integration API needed: Call ${tenant.name} at ${tenant.phone} (Tenant ID: ${tenant.id})`)}
+                                data-testid={`button-call-tenant-modal-${conversation.id}`}
+                              >
                                 <Phone className="h-4 w-4 mr-2" />
                                 Call Tenant
                               </Button>

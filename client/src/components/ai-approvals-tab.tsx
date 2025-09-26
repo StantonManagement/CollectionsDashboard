@@ -141,11 +141,12 @@ export default function AiApprovalsTab() {
             <Button 
               className="bg-green-600 text-white hover:bg-green-700"
               disabled={pendingApprovals.length === 0}
+              onClick={() => alert(`Bulk approval API needed: Approve ${pendingApprovals.filter((c: Conversation) => c.confidence && c.confidence >= 85).length} high-confidence responses`)}
               data-testid="button-approve-all"
             >
               Approve All Valid ({pendingApprovals.filter((c: Conversation) => c.confidence && c.confidence >= 85).length})
             </Button>
-            <Select defaultValue="all">
+            <Select defaultValue="all" onValueChange={(value) => alert(`Confidence filtering API needed: Filter by ${value} confidence level`)}>
               <SelectTrigger className="w-48" data-testid="select-confidence-filter">
                 <SelectValue />
               </SelectTrigger>
@@ -280,15 +281,33 @@ export default function AiApprovalsTab() {
                 {/* Action Buttons */}
                 <div className="flex items-center justify-between pt-4 border-t border-border">
                   <div className="flex items-center space-x-3">
-                    <Button variant="link" size="sm" className="text-primary hover:underline p-0 h-auto flex items-center space-x-1" data-testid={`button-view-conversation-${conversation.id}`}>
+                    <Button 
+                      variant="link" 
+                      size="sm" 
+                      className="text-primary hover:underline p-0 h-auto flex items-center space-x-1" 
+                      onClick={() => alert(`Full conversation modal API needed: Open full conversation for ${tenant.name} (Conversation ID: ${conversation.id})`)}
+                      data-testid={`button-view-conversation-${conversation.id}`}
+                    >
                       <Scroll className="h-4 w-4" />
                       <span>View Full Conversation</span>
                     </Button>
-                    <Button variant="link" size="sm" className="text-primary hover:underline p-0 h-auto flex items-center space-x-1" data-testid={`button-tenant-profile-${conversation.id}`}>
+                    <Button 
+                      variant="link" 
+                      size="sm" 
+                      className="text-primary hover:underline p-0 h-auto flex items-center space-x-1" 
+                      onClick={() => alert(`Tenant profile modal API needed: Open profile for ${tenant.name} (Tenant ID: ${tenant.id})`)}
+                      data-testid={`button-tenant-profile-${conversation.id}`}
+                    >
                       <User className="h-4 w-4" />
                       <span>Tenant Profile</span>
                     </Button>
-                    <Button variant="link" size="sm" className="text-primary hover:underline p-0 h-auto flex items-center space-x-1" data-testid={`button-call-tenant-${conversation.id}`}>
+                    <Button 
+                      variant="link" 
+                      size="sm" 
+                      className="text-primary hover:underline p-0 h-auto flex items-center space-x-1" 
+                      onClick={() => alert(`Phone integration API needed: Call ${tenant.name} at ${tenant.phone} (Tenant ID: ${tenant.id})`)}
+                      data-testid={`button-call-tenant-${conversation.id}`}
+                    >
                       <Phone className="h-4 w-4" />
                       <span>Call Tenant</span>
                     </Button>
@@ -305,6 +324,7 @@ export default function AiApprovalsTab() {
                     </Button>
                     <Button 
                       className="bg-yellow-600 text-white hover:bg-yellow-700 flex items-center space-x-1"
+                      onClick={() => alert(`Response modification API needed: Modify AI response for ${tenant.name} (Conversation ID: ${conversation.id})`)}
                       data-testid={`button-modify-${conversation.id}`}
                     >
                       <Edit className="h-4 w-4" />

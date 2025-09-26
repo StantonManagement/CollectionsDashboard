@@ -191,11 +191,23 @@ export default function EscalationsTab() {
                           <div className="flex items-center space-x-2">
                             {escalation.type === "phone_failed" && (
                               <>
-                                <Button variant="outline" size="sm" className="text-slate-600 hover:text-slate-700" data-testid={`button-try-alt-phone-${escalation.id}`}>
+                                <Button 
+                                  variant="outline" 
+                                  size="sm" 
+                                  className="text-slate-600 hover:text-slate-700" 
+                                  onClick={() => alert(`Alternative phone API needed: Try alternative phone number for ${tenant.name} (Escalation ID: ${escalation.id})`)}
+                                  data-testid={`button-try-alt-phone-${escalation.id}`}
+                                >
                                   <Phone className="h-4 w-4 mr-2" />
                                   Try Alt Phone
                                 </Button>
-                                <Button variant="outline" size="sm" className="text-stone-600 hover:text-stone-700" data-testid={`button-manual-call-${escalation.id}`}>
+                                <Button 
+                                  variant="outline" 
+                                  size="sm" 
+                                  className="text-stone-600 hover:text-stone-700" 
+                                  onClick={() => alert(`Manual call logging API needed: Log manual call attempt for ${tenant.name} (Escalation ID: ${escalation.id})`)}
+                                  data-testid={`button-manual-call-${escalation.id}`}
+                                >
                                   <Phone className="h-4 w-4 mr-2" />
                                   Manual Call
                                 </Button>
@@ -203,11 +215,23 @@ export default function EscalationsTab() {
                             )}
                             {escalation.type === "threatening" && (
                               <>
-                                <Button variant="outline" size="sm" className="text-neutral-600 hover:text-neutral-700" data-testid={`button-review-messages-${escalation.id}`}>
+                                <Button 
+                                  variant="outline" 
+                                  size="sm" 
+                                  className="text-neutral-600 hover:text-neutral-700" 
+                                  onClick={() => alert(`Message review API needed: Review threatening messages from ${tenant.name} (Escalation ID: ${escalation.id})`)}
+                                  data-testid={`button-review-messages-${escalation.id}`}
+                                >
                                   <FileText className="h-4 w-4 mr-2" />
                                   Review Messages
                                 </Button>
-                                <Button variant="outline" size="sm" className="text-zinc-600 hover:text-zinc-700" data-testid={`button-legal-consult-${escalation.id}`}>
+                                <Button 
+                                  variant="outline" 
+                                  size="sm" 
+                                  className="text-zinc-600 hover:text-zinc-700" 
+                                  onClick={() => alert(`Legal consultation API needed: Request legal consultation for ${tenant.name} (Escalation ID: ${escalation.id})`)}
+                                  data-testid={`button-legal-consult-${escalation.id}`}
+                                >
                                   <AlertTriangle className="h-4 w-4 mr-2" />
                                   Legal Consult
                                 </Button>
@@ -215,7 +239,12 @@ export default function EscalationsTab() {
                             )}
                           </div>
                           <div className="flex items-center space-x-2">
-                            <Button variant="outline" size="sm" data-testid={`button-assign-${escalation.id}`}>
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              onClick={() => alert(`Assignment API needed: Assign escalation for ${tenant.name} to current user (Escalation ID: ${escalation.id})`)}
+                              data-testid={`button-assign-${escalation.id}`}
+                            >
                               <UserCheck className="h-4 w-4 mr-2" />
                               Assign to Me
                             </Button>
@@ -286,17 +315,34 @@ export default function EscalationsTab() {
                         </div>
                         <div className="flex items-center justify-between">
                           <div className="flex items-center space-x-2">
-                            <Button variant="outline" size="sm" className="text-blue-600 hover:text-blue-700" data-testid={`button-review-account-${escalation.id}`}>
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              className="text-blue-600 hover:text-blue-700" 
+                              onClick={() => alert(`Account review API needed: Open account review for ${tenant.name} (Escalation ID: ${escalation.id})`)}
+                              data-testid={`button-review-account-${escalation.id}`}
+                            >
                               <FileText className="h-4 w-4 mr-2" />
                               Review Account
                             </Button>
-                            <Button variant="outline" size="sm" className="text-green-600 hover:text-green-700" data-testid={`button-contact-tenant-${escalation.id}`}>
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              className="text-green-600 hover:text-green-700" 
+                              onClick={() => alert(`Contact initiation API needed: Initiate contact with ${tenant.name} at ${tenant.phone} (Escalation ID: ${escalation.id})`)}
+                              data-testid={`button-contact-tenant-${escalation.id}`}
+                            >
                               <Phone className="h-4 w-4 mr-2" />
                               Contact Tenant
                             </Button>
                           </div>
                           <div className="flex items-center space-x-2">
-                            <Button variant="outline" size="sm" data-testid={`button-assign-${escalation.id}`}>
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              onClick={() => alert(`Assignment API needed: Assign escalation for ${tenant.name} to current user (Escalation ID: ${escalation.id})`)}
+                              data-testid={`button-assign-${escalation.id}`}
+                            >
                               <UserCheck className="h-4 w-4 mr-2" />
                               Assign to Me
                             </Button>
