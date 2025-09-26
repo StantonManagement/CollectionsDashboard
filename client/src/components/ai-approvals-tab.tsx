@@ -13,6 +13,7 @@ export default function AiApprovalsTab() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const [showOriginalLanguage, setShowOriginalLanguage] = useState<{[key: string]: boolean}>({});
+  const [confidenceFilter, setConfidenceFilter] = useState<string>("all");
 
   const { data: conversations = [], isLoading: conversationsLoading } = useQuery<Conversation[]>({
     queryKey: ["/api/conversations"],
@@ -34,7 +35,25 @@ export default function AiApprovalsTab() {
 
   const pendingApprovals = conversations.filter((conv) => {
     if (!Array.isArray(conv.messages)) return false;
-    return conv.messages.some((msg: Message) => msg.needsApproval);
+    const hasPendingMessage = conv.messages.some((msg: Message) => msg.needsApproval);
+    if (!hasPendingMessage) return false;
+    
+    // Apply confidence filter
+    if (confidenceFilter !== "all") {
+      const confidence = conv.confidence || 0;
+      switch (confidenceFilter) {
+        case "high":
+          return confidence >= 90;
+        case "medium":
+          return confidence >= 70 && confidence < 90;
+        case "low":
+          return confidence < 70;
+        default:
+          return true;
+      }
+    }
+    
+    return true;
   });
 
   const getConfidenceColor = (confidence: number) => {
@@ -146,7 +165,7 @@ export default function AiApprovalsTab() {
             >
               Approve All Valid ({pendingApprovals.filter((c: Conversation) => c.confidence && c.confidence >= 85).length})
             </Button>
-            <Select defaultValue="all" onValueChange={(value) => alert(`Confidence filtering API needed: Filter by ${value} confidence level`)}>
+            <Select value={confidenceFilter} onValueChange={setConfidenceFilter}>
               <SelectTrigger className="w-48" data-testid="select-confidence-filter">
                 <SelectValue />
               </SelectTrigger>

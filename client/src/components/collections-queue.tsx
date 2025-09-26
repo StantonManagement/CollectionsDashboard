@@ -17,16 +17,44 @@ export default function CollectionsQueue({ fullWidth = false }: CollectionsQueue
   const [expandedTenant, setExpandedTenant] = useState<string | null>(null);
   const [priorityFilter, setPriorityFilter] = useState<string>("all");
   const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [propertyFilter, setPropertyFilter] = useState<string>("all");
+  const [sortOption, setSortOption] = useState<string>("priority");
 
   const { data: tenants = [], isLoading } = useQuery<Tenant[]>({
     queryKey: ["/api/tenants"],
   });
 
-  const filteredTenants = tenants.filter((tenant) => {
-    if (priorityFilter !== "all" && tenant.priority !== priorityFilter) return false;
-    if (statusFilter !== "all" && tenant.status !== statusFilter) return false;
-    return true;
-  });
+  const filteredAndSortedTenants = (() => {
+    // Filter tenants
+    let filtered = tenants.filter((tenant) => {
+      if (priorityFilter !== "all" && tenant.priority !== priorityFilter) return false;
+      if (statusFilter !== "all" && tenant.status !== statusFilter) return false;
+      if (propertyFilter !== "all") {
+        const propertyMap: Record<string, string> = {
+          "oak_village": "Oak Village",
+          "maple_commons": "Maple Commons", 
+          "pine_heights": "Pine Heights"
+        };
+        if (tenant.property !== propertyMap[propertyFilter]) return false;
+      }
+      return true;
+    });
+    
+    // Sort tenants
+    return filtered.sort((a, b) => {
+      switch (sortOption) {
+        case "amount":
+          return parseFloat(b.amountOwed) - parseFloat(a.amountOwed);
+        case "days_late":
+          return b.daysLate - a.daysLate;
+        case "priority":
+        default:
+          const priorityOrder = { high: 3, medium: 2, low: 1 };
+          return (priorityOrder[b.priority as keyof typeof priorityOrder] || 0) - 
+                 (priorityOrder[a.priority as keyof typeof priorityOrder] || 0);
+      }
+    });
+  })();
 
   const priorityCounts = {
     high: tenants.filter((t) => t.priority === "high").length,
@@ -152,7 +180,7 @@ export default function CollectionsQueue({ fullWidth = false }: CollectionsQueue
                 <SelectItem value="escalated">Escalated</SelectItem>
               </SelectContent>
             </Select>
-            <Select defaultValue="all" onValueChange={(value) => alert(`Property filter API needed: Filter by ${value}`)}>
+            <Select value={propertyFilter} onValueChange={setPropertyFilter}>
               <SelectTrigger className="w-40" data-testid="select-property-filter">
                 <SelectValue placeholder="All Properties" />
               </SelectTrigger>
@@ -163,7 +191,7 @@ export default function CollectionsQueue({ fullWidth = false }: CollectionsQueue
                 <SelectItem value="pine_heights">Pine Heights</SelectItem>
               </SelectContent>
             </Select>
-            <Select defaultValue="priority" onValueChange={(value) => alert(`Sorting API needed: Sort by ${value}`)}>
+            <Select value={sortOption} onValueChange={setSortOption}>
               <SelectTrigger className="w-40" data-testid="select-sort">
                 <SelectValue />
               </SelectTrigger>
@@ -187,7 +215,7 @@ export default function CollectionsQueue({ fullWidth = false }: CollectionsQueue
 
       {/* Queue Items */}
       <div className="space-y-4 max-h-[calc(100vh-300px)] overflow-y-auto">
-        {filteredTenants.map((tenant) => (
+        {filteredAndSortedTenants.map((tenant) => (
           <Card key={tenant.id} className={`border-l-4 ${getPriorityColor(tenant.priority)} p-4 shadow-sm`} data-testid={`card-tenant-${tenant.id}`}>
             <div className="flex items-start justify-between">
               <div className="flex items-start space-x-3 flex-1">

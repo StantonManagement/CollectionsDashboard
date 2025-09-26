@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -11,6 +12,7 @@ import type { PaymentPlan, Tenant } from "@shared/schema";
 export default function PaymentPlansTab() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const [riskFilter, setRiskFilter] = useState<string>("all");
 
   const { data: paymentPlans = [], isLoading: plansLoading } = useQuery<PaymentPlan[]>({
     queryKey: ["/api/payment-plans"],
@@ -30,7 +32,20 @@ export default function PaymentPlansTab() {
     },
   });
 
-  const pendingPlans = paymentPlans.filter((plan) => plan.status === "proposed");
+  const filteredPlans = paymentPlans.filter((plan) => {
+    if (plan.status !== "proposed") return false;
+    
+    // Apply risk filter
+    if (riskFilter !== "all") {
+      const tenant = tenants.find(t => t.id === plan.tenantId);
+      if (tenant) {
+        const planRiskLevel = getRiskLevel(plan.coverage, tenant);
+        if (planRiskLevel !== riskFilter) return false;
+      }
+    }
+    
+    return true;
+  });
 
   const getTenantById = (tenantId: string) => {
     return tenants.find((t) => t.id === tenantId);
@@ -120,18 +135,18 @@ export default function PaymentPlansTab() {
       <div className="mb-6">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold" data-testid="text-plans-title">
-            Payment Plans for Approval ({pendingPlans.length} pending)
+            Payment Plans for Approval ({filteredPlans.length} pending)
           </h3>
           <div className="flex items-center space-x-3">
             <Button 
               className="bg-green-600 text-white hover:bg-green-700"
-              disabled={pendingPlans.length === 0}
-              onClick={() => alert(`Email generation API needed: Generate bookkeeper email for ${pendingPlans.length} pending payment plans`)}
+              disabled={filteredPlans.length === 0}
+              onClick={() => alert(`Email generation API needed: Generate bookkeeper email for ${filteredPlans.length} pending payment plans`)}
               data-testid="button-generate-bookkeeper-email"
             >
               Generate Bookkeeper Email
             </Button>
-            <Select defaultValue="all" onValueChange={(value) => alert(`Risk filtering API needed: Filter payment plans by ${value} risk level`)}>
+            <Select value={riskFilter} onValueChange={setRiskFilter}>
               <SelectTrigger className="w-40" data-testid="select-risk-filter">
                 <SelectValue />
               </SelectTrigger>
@@ -147,7 +162,7 @@ export default function PaymentPlansTab() {
       </div>
 
       <div className="space-y-6 max-h-[calc(100vh-300px)] overflow-y-auto">
-        {pendingPlans.map((plan: PaymentPlan) => {
+        {filteredPlans.map((plan: PaymentPlan) => {
           const tenant = getTenantById(plan.tenantId);
           if (!tenant) return null;
 

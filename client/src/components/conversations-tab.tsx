@@ -11,6 +11,8 @@ import type { Conversation, Tenant, Message } from "@shared/schema";
 
 export default function ConversationsTab() {
   const [showOriginalLanguage, setShowOriginalLanguage] = useState<{[key: string]: boolean}>({});
+  const [languageFilter, setLanguageFilter] = useState<string>("all");
+  const [statusFilter, setStatusFilter] = useState<string>("active");
   
   const { data: conversations = [], isLoading: conversationsLoading } = useQuery<Conversation[]>({
     queryKey: ["/api/conversations"],
@@ -20,7 +22,23 @@ export default function ConversationsTab() {
     queryKey: ["/api/tenants"],
   });
 
-  const activeConversations = conversations.filter((conv) => conv.status === "active");
+  const filteredConversations = conversations.filter((conv) => {
+    // Apply status filter
+    if (statusFilter === "active" && conv.status !== "active") return false;
+    if (statusFilter !== "all" && statusFilter !== "active" && conv.status !== statusFilter) return false;
+    
+    // Apply language filter
+    if (languageFilter !== "all") {
+      const tenant = tenants.find(t => t.id === conv.tenantId);
+      if (tenant) {
+        const tenantLanguage = tenant.language.toLowerCase();
+        if (languageFilter === "english" && tenantLanguage !== "english") return false;
+        if (languageFilter === "spanish" && tenantLanguage !== "spanish") return false;
+      }
+    }
+    
+    return true;
+  });
 
   const getTenantById = (tenantId: string) => {
     return tenants.find((t) => t.id === tenantId);
@@ -95,7 +113,7 @@ export default function ConversationsTab() {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-2">
             <h3 className="text-lg font-semibold" data-testid="text-conversations-title">
-              Active Conversations ({activeConversations.length} ongoing)
+              Conversations ({filteredConversations.length} {statusFilter === 'active' ? 'ongoing' : 'total'})
             </h3>
             <div className="flex items-center space-x-1 text-green-600">
               <div className="w-4 h-4 bg-green-500 animate-pulse"></div>
@@ -103,7 +121,7 @@ export default function ConversationsTab() {
             </div>
           </div>
           <div className="flex items-center space-x-3">
-            <Select defaultValue="all" onValueChange={(value) => alert(`Language filtering API needed: Filter conversations by ${value} language`)}>
+            <Select value={languageFilter} onValueChange={setLanguageFilter}>
               <SelectTrigger className="w-40" data-testid="select-language-filter">
                 <SelectValue />
               </SelectTrigger>
@@ -113,7 +131,7 @@ export default function ConversationsTab() {
                 <SelectItem value="spanish">Spanish</SelectItem>
               </SelectContent>
             </Select>
-            <Select defaultValue="active" onValueChange={(value) => alert(`Status filtering API needed: Filter conversations by ${value} status`)}>
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger className="w-32" data-testid="select-status-filter">
                 <SelectValue />
               </SelectTrigger>
@@ -129,7 +147,7 @@ export default function ConversationsTab() {
       </div>
 
       <div className="space-y-4 max-h-[calc(100vh-300px)] overflow-y-auto">
-        {activeConversations.map((conversation: Conversation) => {
+        {filteredConversations.map((conversation: Conversation) => {
           const tenant = getTenantById(conversation.tenantId);
           if (!tenant) return null;
 
@@ -306,7 +324,7 @@ export default function ConversationsTab() {
           );
         })}
 
-        {activeConversations.length === 0 && (
+        {filteredConversations.length === 0 && (
           <Card className="p-8 text-center text-muted-foreground">
             <MessageSquare className="h-12 w-12 mx-auto mb-4 opacity-50" />
             <h4 className="font-medium mb-2">No Active Conversations</h4>
