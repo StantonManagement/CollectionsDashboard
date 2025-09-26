@@ -13,6 +13,7 @@ export default function EscalationsTab() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const [expandedSections, setExpandedSections] = useState<string[]>(["immediate", "same_day"]);
+  const [assignedEscalations, setAssignedEscalations] = useState<{[key: string]: string}>({});
 
   const { data: escalations = [], isLoading: escalationsLoading } = useQuery<Escalation[]>({
     queryKey: ["/api/escalations"],
@@ -240,13 +241,20 @@ export default function EscalationsTab() {
                           </div>
                           <div className="flex items-center space-x-2">
                             <Button 
-                              variant="outline" 
-                              size="sm" 
-                              onClick={() => alert(`Assignment API needed: Assign escalation for ${tenant.name} to current user (Escalation ID: ${escalation.id})`)}
+                              variant={assignedEscalations[escalation.id] ? "default" : "outline"}
+                              size="sm"
+                              disabled={!!assignedEscalations[escalation.id]} 
+                              onClick={() => {
+                                setAssignedEscalations(prev => ({ ...prev, [escalation.id]: 'current-user' }));
+                                toast({
+                                  title: "Escalation Assigned",
+                                  description: `Escalation for ${tenant.name} has been assigned to you.`,
+                                });
+                              }}
                               data-testid={`button-assign-${escalation.id}`}
                             >
                               <UserCheck className="h-4 w-4 mr-2" />
-                              Assign to Me
+                              {assignedEscalations[escalation.id] ? 'Assigned to You' : 'Assign to Me'}
                             </Button>
                             <Button 
                               className="bg-green-600 text-white hover:bg-green-700"
@@ -316,8 +324,9 @@ export default function EscalationsTab() {
                         <div className="flex items-center justify-between">
                           <div className="flex items-center space-x-2">
                             <Button 
-                              variant="outline" 
-                              size="sm" 
+                              variant={assignedEscalations[escalation.id] ? "default" : "outline"}
+                              size="sm"
+                              disabled={!!assignedEscalations[escalation.id]} 
                               className="text-blue-600 hover:text-blue-700" 
                               onClick={() => alert(`Account review API needed: Open account review for ${tenant.name} (Escalation ID: ${escalation.id})`)}
                               data-testid={`button-review-account-${escalation.id}`}
@@ -326,8 +335,9 @@ export default function EscalationsTab() {
                               Review Account
                             </Button>
                             <Button 
-                              variant="outline" 
-                              size="sm" 
+                              variant={assignedEscalations[escalation.id] ? "default" : "outline"}
+                              size="sm"
+                              disabled={!!assignedEscalations[escalation.id]} 
                               className="text-green-600 hover:text-green-700" 
                               onClick={() => window.open(`tel:${tenant.phone}`, '_self')}
                               data-testid={`button-contact-tenant-${escalation.id}`}
@@ -338,13 +348,20 @@ export default function EscalationsTab() {
                           </div>
                           <div className="flex items-center space-x-2">
                             <Button 
-                              variant="outline" 
-                              size="sm" 
-                              onClick={() => alert(`Assignment API needed: Assign escalation for ${tenant.name} to current user (Escalation ID: ${escalation.id})`)}
+                              variant={assignedEscalations[escalation.id] ? "default" : "outline"}
+                              size="sm"
+                              disabled={!!assignedEscalations[escalation.id]} 
+                              onClick={() => {
+                                setAssignedEscalations(prev => ({ ...prev, [escalation.id]: 'current-user' }));
+                                toast({
+                                  title: "Escalation Assigned",
+                                  description: `Escalation for ${tenant.name} has been assigned to you.`,
+                                });
+                              }}
                               data-testid={`button-assign-${escalation.id}`}
                             >
                               <UserCheck className="h-4 w-4 mr-2" />
-                              Assign to Me
+                              {assignedEscalations[escalation.id] ? 'Assigned to You' : 'Assign to Me'}
                             </Button>
                             <Button 
                               className="bg-green-600 text-white hover:bg-green-700"

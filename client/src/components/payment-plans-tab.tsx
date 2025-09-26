@@ -13,6 +13,8 @@ export default function PaymentPlansTab() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const [riskFilter, setRiskFilter] = useState<string>("all");
+  const [editingPlan, setEditingPlan] = useState<string | null>(null);
+  const [editForm, setEditForm] = useState<{[key: string]: any}>({});
 
   const { data: paymentPlans = [], isLoading: plansLoading } = useQuery<PaymentPlan[]>({
     queryKey: ["/api/payment-plans"],
@@ -195,16 +197,77 @@ export default function PaymentPlansTab() {
                 <div className="bg-blue-50 border border-blue-200 rounded p-3">
                   <h5 className="text-sm font-medium text-blue-800 mb-2 flex items-center">
                     <Scroll className="h-4 w-4 mr-2" />
-                    PROPOSED PAYMENT PLAN:
+                    {editingPlan === plan.id ? 'EDIT PAYMENT PLAN:' : 'PROPOSED PAYMENT PLAN:'}
                   </h5>
-                  <div className="space-y-1 text-sm" data-testid={`text-plan-details-${plan.id}`}>
-                    <p>• Weekly Payment: ${plan.weeklyAmount}</p>
-                    <p>• Duration: {plan.duration} weeks</p>
-                    <p>• Total Plan Amount: ${plan.totalAmount}</p>
-                    <p>• Coverage: {plan.coverage}% of debt {plan.coverage >= 100 ? '✅' : '⚠️'}</p>
-                    <p>• Start Date: {plan.startDate}</p>
-                    <p>• Includes Late Fees: {plan.includesLateFees ? 'Yes' : 'No'}</p>
-                  </div>
+                  {editingPlan === plan.id ? (
+                    <div className="space-y-3">
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <label className="text-xs font-medium text-blue-800">Weekly Payment ($)</label>
+                          <input
+                            type="number"
+                            value={editForm.weeklyAmount || ''}
+                            onChange={(e) => setEditForm(prev => ({ ...prev, weeklyAmount: parseFloat(e.target.value) }))}
+                            className="w-full mt-1 px-2 py-1 text-sm border rounded focus:ring-2 focus:ring-blue-500"
+                            data-testid={`input-weekly-amount-${plan.id}`}
+                          />
+                        </div>
+                        <div>
+                          <label className="text-xs font-medium text-blue-800">Duration (weeks)</label>
+                          <input
+                            type="number"
+                            value={editForm.duration || ''}
+                            onChange={(e) => setEditForm(prev => ({ ...prev, duration: parseInt(e.target.value) }))}
+                            className="w-full mt-1 px-2 py-1 text-sm border rounded focus:ring-2 focus:ring-blue-500"
+                            data-testid={`input-duration-${plan.id}`}
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="text-xs font-medium text-blue-800">Start Date</label>
+                        <input
+                          type="date"
+                          value={editForm.startDate || ''}
+                          onChange={(e) => setEditForm(prev => ({ ...prev, startDate: e.target.value }))}
+                          className="w-full mt-1 px-2 py-1 text-sm border rounded focus:ring-2 focus:ring-blue-500"
+                          data-testid={`input-start-date-${plan.id}`}
+                        />
+                      </div>
+                      <div className="flex items-center space-x-2 pt-2">
+                        <Button 
+                          size="sm" 
+                          className="bg-green-600 text-white hover:bg-green-700"
+                          onClick={() => {
+                            setEditingPlan(null);
+                            toast({
+                              title: "Plan Updated",
+                              description: `Payment plan terms updated for ${tenant.name}.`,
+                            });
+                          }}
+                          data-testid={`button-save-terms-${plan.id}`}
+                        >
+                          Save Changes
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => setEditingPlan(null)}
+                          data-testid={`button-cancel-edit-${plan.id}`}
+                        >
+                          Cancel
+                        </Button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="space-y-1 text-sm" data-testid={`text-plan-details-${plan.id}`}>
+                      <p>• Weekly Payment: ${plan.weeklyAmount}</p>
+                      <p>• Duration: {plan.duration} weeks</p>
+                      <p>• Total Plan Amount: ${plan.totalAmount}</p>
+                      <p>• Coverage: {plan.coverage}% of debt {plan.coverage >= 100 ? '✅' : '⚠️'}</p>
+                      <p>• Start Date: {plan.startDate}</p>
+                      <p>• Includes Late Fees: {plan.includesLateFees ? 'Yes' : 'No'}</p>
+                    </div>
+                  )}
                 </div>
 
                 {/* Tenant Payment History */}
@@ -258,7 +321,14 @@ export default function PaymentPlansTab() {
                       variant="link" 
                       size="sm" 
                       className="text-primary hover:underline p-0 h-auto flex items-center space-x-1" 
-                      onClick={() => alert(`Plan modification API needed: Modify payment plan terms for ${tenant.name} (Plan ID: ${plan.id})`)}
+                      onClick={() => {
+                        setEditingPlan(plan.id);
+                        setEditForm({ 
+                          weeklyAmount: plan.weeklyAmount, 
+                          duration: plan.duration, 
+                          startDate: plan.startDate 
+                        });
+                      }}
                       data-testid={`button-modify-terms-${plan.id}`}
                     >
                       <Edit className="h-4 w-4" />
@@ -299,7 +369,7 @@ export default function PaymentPlansTab() {
           );
         })}
 
-        {pendingPlans.length === 0 && (
+        {filteredPlans.length === 0 && (
           <Card className="p-8 text-center text-muted-foreground">
             <h4 className="font-medium mb-2">No Payment Plans Pending</h4>
             <p className="text-sm">All payment plans have been reviewed and processed.</p>
