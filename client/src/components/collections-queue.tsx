@@ -6,6 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card } from "@/components/ui/card";
+import ConversationModal from "@/components/modals/ConversationModal";
+import TenantProfileModal from "@/components/modals/TenantProfileModal";
 import type { Tenant } from "@shared/schema";
 
 interface CollectionsQueueProps {
@@ -19,9 +21,17 @@ export default function CollectionsQueue({ fullWidth = false }: CollectionsQueue
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [propertyFilter, setPropertyFilter] = useState<string>("all");
   const [sortOption, setSortOption] = useState<string>("priority");
+  const [selectedConversation, setSelectedConversation] = useState<any>(null);
+  const [selectedTenantForProfile, setSelectedTenantForProfile] = useState<Tenant | null>(null);
+  const [isConversationModalOpen, setIsConversationModalOpen] = useState(false);
+  const [isTenantProfileModalOpen, setIsTenantProfileModalOpen] = useState(false);
 
   const { data: tenants = [], isLoading } = useQuery<Tenant[]>({
     queryKey: ["/api/tenants"],
+  });
+
+  const { data: conversations = [] } = useQuery<any[]>({
+    queryKey: ["/api/conversations"],
   });
 
   const filteredAndSortedTenants = (() => {
@@ -260,7 +270,12 @@ export default function CollectionsQueue({ fullWidth = false }: CollectionsQueue
                       variant="link" 
                       size="sm" 
                       className="text-primary hover:underline p-0 h-auto" 
-                      onClick={() => alert(`Conversation modal API needed: Open conversation for tenant ${tenant.name} (ID: ${tenant.id})`)}
+                      onClick={() => {
+                        const tenantConversation = conversations.find((conv: any) => conv.tenantId === tenant.id);
+                        setSelectedConversation(tenantConversation || { id: `conv-${tenant.id}`, tenantId: tenant.id, messages: [], status: 'active' });
+                        setSelectedTenantForProfile(tenant);
+                        setIsConversationModalOpen(true);
+                      }}
                       data-testid={`button-view-conversation-${tenant.id}`}
                     >
                       View Conversation
@@ -284,6 +299,18 @@ export default function CollectionsQueue({ fullWidth = false }: CollectionsQueue
                       <Phone className="h-3 w-3 mr-1" />
                       Call
                     </Button>
+                    <Button 
+                      variant="link" 
+                      size="sm" 
+                      className="text-primary hover:underline p-0 h-auto" 
+                      onClick={() => {
+                        setSelectedTenantForProfile(tenant);
+                        setIsTenantProfileModalOpen(true);
+                      }}
+                      data-testid={`button-view-profile-${tenant.id}`}
+                    >
+                      Profile
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -304,6 +331,23 @@ export default function CollectionsQueue({ fullWidth = false }: CollectionsQueue
           </Card>
         ))}
       </div>
+      
+      {/* Modals */}
+      <ConversationModal
+        conversation={selectedConversation}
+        tenant={selectedTenantForProfile}
+        isOpen={isConversationModalOpen}
+        onClose={() => {
+          setIsConversationModalOpen(false);
+          setSelectedConversation(null);
+          setSelectedTenantForProfile(null);
+        }}
+      />
+      <TenantProfileModal
+        tenant={selectedTenantForProfile}
+        isOpen={isTenantProfileModalOpen}
+        onClose={() => setIsTenantProfileModalOpen(false)}
+      />
     </section>
   );
 }
