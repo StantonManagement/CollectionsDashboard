@@ -195,7 +195,7 @@ export default function EscalationsTab() {
                                   variant="outline" 
                                   size="sm" 
                                   className="text-slate-600 hover:text-slate-700" 
-                                  onClick={() => alert(`Alternative phone API needed: Try alternative phone number for ${tenant.name} (Escalation ID: ${escalation.id})`)}
+                                  onClick={() => window.open(`tel:${tenant.phone}`, '_self')}
                                   data-testid={`button-try-alt-phone-${escalation.id}`}
                                 >
                                   <Phone className="h-4 w-4 mr-2" />
@@ -205,7 +205,7 @@ export default function EscalationsTab() {
                                   variant="outline" 
                                   size="sm" 
                                   className="text-stone-600 hover:text-stone-700" 
-                                  onClick={() => alert(`Manual call logging API needed: Log manual call attempt for ${tenant.name} (Escalation ID: ${escalation.id})`)}
+                                  onClick={() => window.open(`tel:${tenant.phone}`, '_self')}
                                   data-testid={`button-manual-call-${escalation.id}`}
                                 >
                                   <Phone className="h-4 w-4 mr-2" />
@@ -329,7 +329,7 @@ export default function EscalationsTab() {
                               variant="outline" 
                               size="sm" 
                               className="text-green-600 hover:text-green-700" 
-                              onClick={() => alert(`Contact initiation API needed: Initiate contact with ${tenant.name} at ${tenant.phone} (Escalation ID: ${escalation.id})`)}
+                              onClick={() => window.open(`tel:${tenant.phone}`, '_self')}
                               data-testid={`button-contact-tenant-${escalation.id}`}
                             >
                               <Phone className="h-4 w-4 mr-2" />

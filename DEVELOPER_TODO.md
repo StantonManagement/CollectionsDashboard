@@ -1,15 +1,14 @@
 # DEVELOPER TODO LIST - Collections Dashboard Backend APIs
 
-## 🚀 PRIORITY 1: CRITICAL PHONE INTEGRATION APIs
+## 🚀 PRIORITY 1: PHONE INTEGRATION APIs (PARTIALLY COMPLETE)
 
-### Phone System Integration (12+ instances)
-**Required for:** Collections Queue, AI Approvals, Conversations, Payment Plans, Escalations
+### Phone System Integration (5+ remaining instances)
+**Status:** ✅ Basic phone calling now works with system default app
+**Remaining APIs needed for:** Call logging, alternative numbers, manual call tracking
 
-- **Phone Call Initiation API**
-  - Endpoint: `POST /api/phone/initiate-call`
-  - Purpose: Start phone calls from the dashboard
-  - Parameters: `{tenantId, phoneNumber, callType, contextId}`
-  - Required by buttons: `button-call-{id}`, `button-call-tenant-{id}`, `button-call-tenant-modal-{id}`
+- **~~Phone Call Initiation API~~** ✅ **COMPLETE**
+  - **Implementation:** Now uses `tel:` protocol to open system default phone app
+  - **Status:** All phone buttons (`button-call-{id}`, `button-call-tenant-{id}`, etc.) now functional
 
 - **Alternative Phone API**
   - Endpoint: `POST /api/phone/try-alternative`

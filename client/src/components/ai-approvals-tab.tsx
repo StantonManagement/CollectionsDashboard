@@ -305,7 +305,7 @@ export default function AiApprovalsTab() {
                       variant="link" 
                       size="sm" 
                       className="text-primary hover:underline p-0 h-auto flex items-center space-x-1" 
-                      onClick={() => alert(`Phone integration API needed: Call ${tenant.name} at ${tenant.phone} (Tenant ID: ${tenant.id})`)}
+                      onClick={() => window.open(`tel:${tenant.phone}`, '_self')}
                       data-testid={`button-call-tenant-${conversation.id}`}
                     >
                       <Phone className="h-4 w-4" />

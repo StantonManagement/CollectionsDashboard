@@ -250,7 +250,7 @@ export default function CollectionsQueue({ fullWidth = false }: CollectionsQueue
                       variant="link" 
                       size="sm" 
                       className="text-primary hover:underline p-0 h-auto flex items-center" 
-                      onClick={() => alert(`Phone integration API needed: Call ${tenant.name} at ${tenant.phone} (ID: ${tenant.id})`)}
+                      onClick={() => window.open(`tel:${tenant.phone}`, '_self')}
                       data-testid={`button-call-${tenant.id}`}
                     >
                       <Phone className="h-3 w-3 mr-1" />

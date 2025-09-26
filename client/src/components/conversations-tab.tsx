@@ -230,7 +230,7 @@ export default function ConversationsTab() {
                                 variant="outline" 
                                 size="sm" 
                                 className="w-full" 
-                                onClick={() => alert(`Phone integration API needed: Call ${tenant.name} at ${tenant.phone} (Tenant ID: ${tenant.id})`)}
+                                onClick={() => window.open(`tel:${tenant.phone}`, '_self')}
                                 data-testid={`button-call-tenant-modal-${conversation.id}`}
                               >
                                 <Phone className="h-4 w-4 mr-2" />
