@@ -1,8 +1,13 @@
-import type { Express } from "express";
+import type { Express, Request, Response } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Health check endpoint - simple and fast for Railway health checks
+  app.get("/health", (req: Request, res: Response) => {
+    res.status(200).json({ status: 'ok' });
+  });
+
   // Tenants routes
   app.get("/api/tenants", async (req, res) => {
     try {
